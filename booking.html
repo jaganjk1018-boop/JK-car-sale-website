@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Online — JK Car</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0a1628;
+      --blue: #0d47a1;
+      --blue-mid: #1565c0;
+      --accent: #f5a623;
+      --green: #22c55e;
+      --red: #ef4444;
+      --light: #f0f4ff;
+      --white: #ffffff;
+      --gray: #8492a6;
+      --border: rgba(13,71,161,0.10);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--light); color: var(--navy); font-family: 'Outfit', sans-serif; line-height: 1.6; min-height: 100vh; }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(10,22,40,0.97); backdrop-filter: blur(12px);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 60px; height: 70px;
+      border-bottom: 1px solid rgba(245,166,35,0.15); transition: box-shadow 0.3s;
+    }
+    header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.35); }
+    .logo { font-size: 24px; font-weight: 900; color: var(--white); letter-spacing: -1px; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .logo span { color: var(--accent); }
+    .logo-icon { width: 34px; height: 34px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    nav { display: flex; align-items: center; gap: 4px; }
+    nav a { color: rgba(255,255,255,0.70); text-decoration: none; font-weight: 500; font-size: 14px; padding: 7px 14px; border-radius: 6px; transition: all 0.2s; }
+    nav a:hover, nav a.active { color: var(--white); background: rgba(255,255,255,0.08); }
+    .nav-cta { background: var(--accent) !important; color: var(--navy) !important; font-weight: 700 !important; margin-left: 6px; }
+    .nav-cta:hover { background: #e6941a !important; }
+
+    /* ── PAGE HERO ── */
+    .page-hero { background: var(--navy); padding: 52px 60px 44px; position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 320px; height: 320px; border-radius: 50%; background: rgba(13,71,161,0.18); }
+    .page-hero::after { content: ''; position: absolute; bottom: -50px; left: 35%; width: 180px; height: 180px; border-radius: 50%; background: rgba(245,166,35,0.07); }
+    .page-hero-inner { position: relative; z-index: 1; }
+    .hero-label { font-size: 12px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 44px); color: var(--white); line-height: 1.15; margin-bottom: 10px; }
+    .page-hero p { font-size: 16px; color: rgba(255,255,255,0.55); font-weight: 300; max-width: 500px; }
+
+    /* ── STEPS BAR ── */
+    .steps-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 20px 60px; }
+    .steps { display: flex; align-items: center; gap: 0; max-width: 600px; }
+    .step { display: flex; align-items: center; gap: 10px; flex: 1; }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: var(--gray); flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .step.active .step-num { background: var(--blue); border-color: var(--blue); color: white; }
+    .step.done .step-num { background: var(--green); border-color: var(--green); color: white; }
+    .step-label { font-size: 13px; font-weight: 600; color: var(--gray); transition: color 0.3s; }
+    .step.active .step-label { color: var(--blue); }
+    .step.done .step-label { color: var(--green); }
+    .step-line { flex: 1; height: 2px; background: var(--border); margin: 0 8px; transition: background 0.3s; }
+    .step-line.done { background: var(--green); }
+
+    /* ── MAIN LAYOUT ── */
+    .main-grid { display: grid; grid-template-columns: 1fr 360px; gap: 32px; padding: 48px 60px 60px; max-width: 1200px; margin: 0 auto; }
+
+    /* ── FORM CARD ── */
+    .form-card { background: var(--white); border-radius: 24px; padding: 44px 48px; border: 1.5px solid var(--border); box-shadow: 0 4px 30px rgba(13,71,161,0.07); }
+
+    .form-section { display: none; animation: fadeUp 0.35s ease both; }
+    .form-section.active { display: block; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    .section-heading { margin-bottom: 28px; }
+    .section-heading h2 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 6px; }
+    .section-heading p { font-size: 14px; color: var(--gray); font-weight: 300; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-row.single { grid-template-columns: 1fr; }
+
+    .field { margin-bottom: 20px; }
+    .field label { display: block; font-size: 12px; font-weight: 700; color: var(--gray); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 8px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 13px 16px;
+      border: 1.5px solid var(--border); border-radius: 12px;
+      font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--navy);
+      background: var(--light); outline: none; transition: all 0.2s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--blue); background: var(--white); box-shadow: 0 0 0 4px rgba(13,71,161,0.06); }
+    .field input.error, .field select.error { border-color: var(--red); box-shadow: 0 0 0 4px rgba(239,68,68,0.06); }
+    .field .error-text { font-size: 12px; color: var(--red); margin-top: 5px; display: none; font-weight: 500; }
+    .field.has-error .error-text { display: block; }
+    .field textarea { resize: vertical; min-height: 90px; }
+    .field select option { background: var(--white); }
+
+    /* Radio cards */
+    .radio-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .radio-card { position: relative; }
+    .radio-card input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .radio-card label {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 16px 10px; border-radius: 12px;
+      border: 1.5px solid var(--border); background: var(--light);
+      cursor: pointer; transition: all 0.2s; text-align: center;
+      font-size: 13px; font-weight: 600; color: var(--gray); text-transform: none; letter-spacing: 0;
+    }
+    .radio-card label .rc-icon { font-size: 22px; }
+    .radio-card input:checked + label { border-color: var(--blue); background: rgba(13,71,161,0.06); color: var(--blue); }
+
+    /* Time slots */
+    .time-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .time-slot { position: relative; }
+    .time-slot input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .time-slot label {
+      display: block; text-align: center; padding: 10px 6px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      background: var(--light); cursor: pointer; transition: all 0.2s;
+      font-size: 12px; font-weight: 600; color: var(--gray);
+      text-transform: none; letter-spacing: 0;
+    }
+    .time-slot input:checked + label { border-color: var(--blue); background: rgba(13,71,161,0.06); color: var(--blue); }
+    .time-slot label:hover { border-color: rgba(13,71,161,0.3); }
+
+    /* Nav buttons */
+    .form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .btn-back {
+      background: transparent; border: 1.5px solid var(--border); border-radius: 12px;
+      font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 14px; color: var(--gray);
+      padding: 12px 24px; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-back:hover { border-color: var(--navy); color: var(--navy); }
+    .btn-next {
+      background: var(--blue); color: white; border: none; border-radius: 12px;
+      font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14px;
+      padding: 13px 30px; cursor: pointer; transition: all 0.25s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-next:hover { background: var(--blue-mid); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,71,161,0.25); }
+    .btn-submit { background: var(--green); }
+    .btn-submit:hover { background: #16a34a; box-shadow: 0 8px 24px rgba(34,197,94,0.3); }
+
+    /* ── SUCCESS STATE ── */
+    .success-state { display: none; text-align: center; padding: 60px 20px; animation: fadeUp 0.4s ease both; }
+    .success-state.visible { display: block; }
+    .success-icon { font-size: 64px; margin-bottom: 20px; }
+    .success-title { font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 12px; }
+    .success-sub { font-size: 15px; color: var(--gray); font-weight: 300; margin-bottom: 30px; max-width: 380px; margin-left: auto; margin-right: auto; }
+    .booking-ref {
+      display: inline-block; background: rgba(34,197,94,0.1); border: 1.5px solid rgba(34,197,94,0.25);
+      color: var(--green); font-weight: 800; font-size: 18px; letter-spacing: 2px;
+      padding: 12px 28px; border-radius: 12px; margin-bottom: 28px;
+    }
+    .success-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-home {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--blue); color: white; text-decoration: none;
+      font-weight: 700; font-size: 14px; padding: 13px 26px; border-radius: 12px; transition: all 0.2s;
+    }
+    .btn-home:hover { background: var(--blue-mid); transform: translateY(-2px); }
+    .btn-whatsapp {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #25d366; color: white; text-decoration: none;
+      font-weight: 700; font-size: 14px; padding: 13px 26px; border-radius: 12px; transition: all 0.2s;
+    }
+    .btn-whatsapp:hover { background: #1ebe5d; transform: translateY(-2px); }
+
+    /* ── SIDEBAR ── */
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+    .info-card { background: var(--white); border-radius: 20px; padding: 28px; border: 1.5px solid var(--border); }
+    .info-card-title { font-size: 14px; font-weight: 700; margin-bottom: 18px; color: var(--navy); }
+
+    .info-items { display: flex; flex-direction: column; gap: 14px; }
+    .info-item { display: flex; align-items: flex-start; gap: 12px; }
+    .info-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+    .info-text .info-label { font-size: 11px; font-weight: 700; color: var(--gray); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 2px; }
+    .info-text .info-val { font-size: 14px; font-weight: 500; color: var(--navy); }
+
+    .perks { display: flex; flex-direction: column; gap: 12px; }
+    .perk { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--navy); font-weight: 400; }
+    .perk-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+
+    .dark-card { background: var(--navy); border-radius: 20px; padding: 28px; color: white; }
+    .dark-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .dark-card p { font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 300; margin-bottom: 20px; line-height: 1.7; }
+    .btn-wa {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: #25d366; color: white; text-decoration: none;
+      font-weight: 700; font-size: 14px; padding: 12px; border-radius: 12px; transition: all 0.2s;
+    }
+    .btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--navy); padding: 36px 60px 28px; color: rgba(255,255,255,0.5); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; font-size: 13px; }
+    .footer-social { display: flex; gap: 16px; }
+    .footer-social a, .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+    .footer-social a:hover, .footer-links a:hover { color: var(--accent); }
+    .footer-links { display: flex; gap: 20px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; padding: 32px 20px 50px; } }
+    @media (max-width: 768px) {
+      header { padding: 0 20px; } .page-hero { padding: 40px 20px 36px; }
+      .steps-bar { padding: 16px 20px; } .form-card { padding: 28px 22px; }
+      footer { padding: 30px 20px 24px; } nav { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .radio-cards { grid-template-columns: repeat(3, 1fr); }
+      .time-slots { grid-template-columns: repeat(3, 1fr); }
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--light); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+
+    input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="mainHeader">
+    <a href="index.html" class="logo"><div class="logo-icon">🚗</div>JK<span>Car</span></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="brands/mahindra.html">Brands</a>
+      <a href="compare.html">Compare</a>
+      <a href="emi-calculator.html">EMI Calculator</a>
+      <a href="search.html">Search</a>
+      <a href="login.html">Login</a>
+      <a href="booking.html" class="nav-cta active">Book a Car</a>
+    </nav>
+  </header>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="hero-label">📅 Online Booking</div>
+      <h1>Book Your Test Drive</h1>
+      <p>Fill in your details and we'll confirm your slot within 30 minutes. No commitment, just the drive.</p>
+    </div>
+  </div>
+
+  <!-- STEPS BAR -->
+  <div class="steps-bar">
+    <div class="steps">
+      <div class="step active" id="stepEl1">
+        <div class="step-num" id="stepNum1">1</div>
+        <div class="step-label">Your Details</div>
+      </div>
+      <div class="step-line" id="stepLine1"></div>
+      <div class="step" id="stepEl2">
+        <div class="step-num" id="stepNum2">2</div>
+        <div class="step-label">Choose Car</div>
+      </div>
+      <div class="step-line" id="stepLine2"></div>
+      <div class="step" id="stepEl3">
+        <div class="step-num" id="stepNum3">3</div>
+        <div class="step-label">Schedule</div>
+      </div>
+      <div class="step-line" id="stepLine3"></div>
+      <div class="step" id="stepEl4">
+        <div class="step-num" id="stepNum4">4</div>
+        <div class="step-label">Confirm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-grid">
+
+    <!-- FORM CARD -->
+    <div class="form-card">
+
+      <!-- ── STEP 1: Personal Details ── -->
+      <div class="form-section active" id="section1">
+        <div class="section-heading">
+          <h2>Personal Details</h2>
+          <p>Tell us a little about yourself so we can prepare for your visit.</p>
+        </div>
+
+        <div class="form-row">
+          <div class="field" id="fName">
+            <label>Full Name</label>
+            <input type="text" id="name" placeholder="e.g. Rajesh Kumar">
+            <div class="error-text">Please enter your full name.</div>
+          </div>
+          <div class="field" id="fPhone">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="e.g. 9876543210" maxlength="10">
+            <div class="error-text">Enter a valid 10-digit number.</div>
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="field" id="fEmail">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="e.g. rajesh@gmail.com">
+            <div class="error-text">Enter a valid email address.</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>City</label>
+            <select id="city">
+              <option value="">Select city</option>
+              <option>Chennai</option>
+              <option>Coimbatore</option>
+              <option>Madurai</option>
+              <option>Salem</option>
+              <option>Trichy</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>How did you hear about us?</label>
+            <select id="source">
+              <option value="">Select source</option>
+              <option>Google Search</option>
+              <option>Instagram</option>
+              <option>WhatsApp</option>
+              <option>Friend / Referral</option>
+              <option>Walk-in</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <div></div>
+          <button class="btn-next" onclick="goToStep(2)">Next: Choose Car →</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: Choose Car ── -->
+      <div class="form-section" id="section2">
+        <div class="section-heading">
+          <h2>Choose Your Car</h2>
+          <p>Select the model you're interested in and your preferred fuel type.</p>
+        </div>
+
+        <div class="field" id="fCar">
+          <label>Car Brand</label>
+          <select id="carBrand" onchange="updateModels()">
+            <option value="">Select brand</option>
+            <option value="Mahindra">Mahindra</option>
+            <option value="Toyota">Toyota</option>
+            <option value="Hyundai">Hyundai</option>
+            <option value="Maruti Suzuki">Maruti Suzuki</option>
+            <option value="Renault">Renault</option>
+          </select>
+          <div class="error-text">Please select a brand.</div>
+        </div>
+        <div class="field" id="fModel">
+          <label>Car Model</label>
+          <select id="carModel">
+            <option value="">Select brand first</option>
+          </select>
+          <div class="error-text">Please select a model.</div>
+        </div>
+
+        <div class="field">
+          <label>Preferred Fuel Type</label>
+          <div class="radio-cards">
+            <div class="radio-card"><input type="radio" name="fuel" id="fuelPetrol" value="Petrol"><label for="fuelPetrol"><span class="rc-icon">⛽</span>Petrol</label></div>
+            <div class="radio-card"><input type="radio" name="fuel" id="fuelDiesel" value="Diesel"><label for="fuelDiesel"><span class="rc-icon">🛢</span>Diesel</label></div>
+            <div class="radio-card"><input type="radio" name="fuel" id="fuelEV" value="Electric"><label for="fuelEV"><span class="rc-icon">⚡</span>Electric</label></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Type of Visit</label>
+          <div class="radio-cards">
+            <div class="radio-card"><input type="radio" name="visit" id="visitDrive" value="Test Drive" checked><label for="visitDrive"><span class="rc-icon">🚗</span>Test Drive</label></div>
+            <div class="radio-card"><input type="radio" name="visit" id="visitLoan" value="Loan Enquiry"><label for="visitLoan"><span class="rc-icon">💳</span>Loan Enquiry</label></div>
+            <div class="radio-card"><input type="radio" name="visit" id="visitPurchase" value="Purchase"><label for="visitPurchase"><span class="rc-icon">🤝</span>Purchase</label></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Budget Range</label>
+          <select id="budget">
+            <option value="">Select budget</option>
+            <option>Under ₹5 Lakh</option>
+            <option>₹5 – ₹10 Lakh</option>
+            <option>₹10 – ₹20 Lakh</option>
+            <option>₹20 – ₹40 Lakh</option>
+            <option>Above ₹40 Lakh</option>
+          </select>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goToStep(1)">← Back</button>
+          <button class="btn-next" onclick="goToStep(3)">Next: Schedule →</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 3: Schedule ── -->
+      <div class="form-section" id="section3">
+        <div class="section-heading">
+          <h2>Schedule Your Visit</h2>
+          <p>Pick a date and time slot that works for you.</p>
+        </div>
+
+        <div class="field" id="fDate">
+          <label>Preferred Date</label>
+          <input type="date" id="visitDate">
+          <div class="error-text">Please choose a date (today or later).</div>
+        </div>
+
+        <div class="field">
+          <label>Preferred Time Slot</label>
+          <div class="time-slots">
+            <div class="time-slot"><input type="radio" name="time" id="t1" value="9:00 AM"><label for="t1">9:00 AM</label></div>
+            <div class="time-slot"><input type="radio" name="time" id="t2" value="10:30 AM"><label for="t2">10:30 AM</label></div>
+            <div class="time-slot"><input type="radio" name="time" id="t3" value="12:00 PM"><label for="t3">12:00 PM</label></div>
+            <div class="time-slot"><input type="radio" name="time" id="t4" value="2:00 PM"><label for="t4">2:00 PM</label></div>
+            <div class="time-slot"><input type="radio" name="time" id="t5" value="3:30 PM"><label for="t5">3:30 PM</label></div>
+            <div class="time-slot"><input type="radio" name="time" id="t6" value="5:00 PM"><label for="t6">5:00 PM</label></div>
+            <div class="time-slot"><input type="radio" name="time" id="t7" value="6:30 PM" checked><label for="t7">6:30 PM</label></div>
+            <div class="time-slot"><input type="radio" name="time" id="t8" value="Flexible"><label for="t8">Flexible</label></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Additional Notes (optional)</label>
+          <textarea id="notes" placeholder="Any specific requirements, colour preference, accessories you'd like to discuss…"></textarea>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goToStep(2)">← Back</button>
+          <button class="btn-next" onclick="goToStep(4)">Next: Confirm →</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 4: Confirm ── -->
+      <div class="form-section" id="section4">
+        <div class="section-heading">
+          <h2>Confirm Your Booking</h2>
+          <p>Please review your details before submitting.</p>
+        </div>
+
+        <div id="summaryBox" style="background:var(--light);border-radius:16px;padding:24px 28px;margin-bottom:28px;border:1.5px solid var(--border);">
+          <!-- filled by JS -->
+        </div>
+
+        <div class="field">
+          <label style="display:flex;align-items:center;gap:10px;text-transform:none;letter-spacing:0;font-size:14px;font-weight:500;color:var(--navy);cursor:pointer;">
+            <input type="checkbox" id="terms" style="width:18px;height:18px;accent-color:var(--blue);flex-shrink:0;">
+            I agree to be contacted by JK Car regarding my booking and related offers.
+          </label>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goToStep(3)">← Back</button>
+          <button class="btn-next btn-submit" onclick="submitBooking()">✓ Confirm Booking</button>
+        </div>
+      </div>
+
+      <!-- ── SUCCESS ── -->
+      <div class="success-state" id="successState">
+        <div class="success-icon">🎉</div>
+        <h2 class="success-title">Booking Confirmed!</h2>
+        <p class="success-sub">Thank you! Our team will call you within 30 minutes to confirm your slot. See you at the showroom!</p>
+        <div class="booking-ref" id="bookingRef">JKC-000000</div>
+        <div class="success-actions">
+          <a href="index.html" class="btn-home">← Back to Home</a>
+          <a href="https://wa.me/919361301371" target="_blank" class="btn-whatsapp">💬 Chat on WhatsApp</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <div class="info-card">
+        <div class="info-card-title">📍 Showroom Details</div>
+        <div class="info-items">
+          <div class="info-item">
+            <div class="info-icon">📍</div>
+            <div class="info-text">
+              <div class="info-label">Address</div>
+              <div class="info-val">No. 12, GST Road, Chrompet, Chennai – 600044</div>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">📞</div>
+            <div class="info-text">
+              <div class="info-label">Phone</div>
+              <div class="info-val"><a href="tel:+919361301371" style="color:var(--blue);text-decoration:none;font-weight:600;">+91 93613 01371</a></div>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">🕐</div>
+            <div class="info-text">
+              <div class="info-label">Working Hours</div>
+              <div class="info-val">Mon – Sat: 9:00 AM – 7:00 PM</div>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">🚗</div>
+            <div class="info-text">
+              <div class="info-label">Test Drive Duration</div>
+              <div class="info-val">20–30 minutes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-title">✅ What to Expect</div>
+        <div class="perks">
+          <div class="perk"><div class="perk-dot"></div>No advance payment required</div>
+          <div class="perk"><div class="perk-dot"></div>Confirmation call within 30 mins</div>
+          <div class="perk"><div class="perk-dot"></div>Free tea/coffee at the showroom</div>
+          <div class="perk"><div class="perk-dot"></div>Test drive on your preferred route</div>
+          <div class="perk"><div class="perk-dot"></div>On-the-spot loan pre-approval</div>
+          <div class="perk"><div class="perk-dot"></div>No pressure, walk away anytime</div>
+        </div>
+      </div>
+
+      <div class="dark-card">
+        <h3>Prefer to Chat?</h3>
+        <p>Message us directly on WhatsApp and we'll help you book in minutes.</p>
+        <a href="https://wa.me/919361301371?text=Hi%20JK%20Car!%20I%20want%20to%20book%20a%20test%20drive." target="_blank" class="btn-wa">💬 Chat on WhatsApp</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-bottom">
+      <span>© 2026 JK Car. All rights reserved.</span>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/_._jagazz_._kingzz_._/" target="_blank">📸 Instagram</a>
+        <a href="https://wa.me/919361301371" target="_blank">💬 WhatsApp</a>
+        <a href="mailto:jaganjk1018@gmail.com">✉️ Email</a>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Header scroll
+    document.getElementById('mainHeader').addEventListener && window.addEventListener('scroll', () => {
+      document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ── Models database
+    const modelsByBrand = {
+      'Mahindra':      ['XUV700','Scorpio N','Thar','XUV300','Bolero Neo','BE 6e'],
+      'Toyota':        ['Innova Crysta','Innova HyCross','Fortuner','Urban Cruiser Hyryder','Camry'],
+      'Hyundai':       ['Creta','Creta N Line','Venue','Alcazar','Tucson','Ioniq 5'],
+      'Maruti Suzuki': ['Swift','Baleno','Brezza','Dzire','Grand Vitara','Ertiga','S-Cross'],
+      'Renault':       ['Kiger','Triber','Duster'],
+    };
+
+    function updateModels() {
+      const brand = document.getElementById('carBrand').value;
+      const sel = document.getElementById('carModel');
+      sel.innerHTML = brand
+        ? modelsByBrand[brand].map(m => `<option value="${m}">${m}</option>`).join('')
+        : '<option value="">Select brand first</option>';
+    }
+
+    // ── Set min date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('visitDate').min = today;
+
+    // ── Step navigation
+    let currentStep = 1;
+
+    function updateStepUI(step) {
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById('stepEl' + i);
+        const num = document.getElementById('stepNum' + i);
+        el.classList.remove('active', 'done');
+        if (i < step) { el.classList.add('done'); num.textContent = '✓'; }
+        else if (i === step) { el.classList.add('active'); num.textContent = i; }
+        else { num.textContent = i; }
+        if (i < 4) {
+          document.getElementById('stepLine' + i).classList.toggle('done', i < step);
+        }
+      }
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('section' + i).classList.toggle('active', i === step);
+      }
+      currentStep = step;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToStep(step) {
+      if (step > currentStep && !validateStep(currentStep)) return;
+      if (step === 4) buildSummary();
+      updateStepUI(step);
+    }
+
+    // ── Validation
+    function setError(fieldId, show) {
+      const field = document.getElementById(fieldId);
+      if (!field) return;
+      field.classList.toggle('has-error', show);
+      const input = field.querySelector('input,select');
+      if (input) input.classList.toggle('error', show);
+    }
+
+    function validateStep(step) {
+      let ok = true;
+      if (step === 1) {
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        if (!name) { setError('fName', true); ok = false; } else setError('fName', false);
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('fEmail', true); ok = false; } else setError('fEmail', false);
+        if (!/^\d{10}$/.test(phone)) { setError('fPhone', true); ok = false; } else setError('fPhone', false);
+      }
+      if (step === 2) {
+        const brand = document.getElementById('carBrand').value;
+        const model = document.getElementById('carModel').value;
+        if (!brand) { setError('fCar', true); ok = false; } else setError('fCar', false);
+        if (!model) { setError('fModel', true); ok = false; } else setError('fModel', false);
+      }
+      if (step === 3) {
+        const date = document.getElementById('visitDate').value;
+        if (!date || date < today) { setError('fDate', true); ok = false; } else setError('fDate', false);
+      }
+      return ok;
+    }
+
+    // ── Build summary
+    function buildSummary() {
+      const fuel = document.querySelector('input[name="fuel"]:checked');
+      const visit = document.querySelector('input[name="visit"]:checked');
+      const time = document.querySelector('input[name="time"]:checked');
+      const rows = [
+        ['👤 Name',       document.getElementById('name').value],
+        ['📞 Phone',      document.getElementById('phone').value],
+        ['✉️ Email',      document.getElementById('email').value],
+        ['🚗 Car',        `${document.getElementById('carBrand').value} ${document.getElementById('carModel').value}`],
+        ['⛽ Fuel',       fuel ? fuel.value : '—'],
+        ['🤝 Visit Type', visit ? visit.value : 'Test Drive'],
+        ['💰 Budget',     document.getElementById('budget').value || '—'],
+        ['📅 Date',       document.getElementById('visitDate').value],
+        ['🕐 Time',       time ? time.value : '—'],
+      ];
+      document.getElementById('summaryBox').innerHTML = rows.map(([k,v]) =>
+        `<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;">
+          <span style="color:var(--gray);font-weight:400;">${k}</span>
+          <span style="font-weight:600;color:var(--navy);text-align:right;max-width:55%;">${v}</span>
+        </div>`
+      ).join('') + '<div style="height:1px;"></div>';
+    }
+
+    // ── Submit
+    function submitBooking() {
+      if (!document.getElementById('terms').checked) {
+        alert('Please agree to be contacted before confirming.'); return;
+      }
+      const ref = 'JKC-' + Math.floor(100000 + Math.random() * 900000);
+      document.getElementById('bookingRef').textContent = ref;
+      // Hide all steps, show success
+      for (let i = 1; i <= 4; i++) document.getElementById('section' + i).classList.remove('active');
+      document.getElementById('successState').classList.add('visible');
+      // Mark all steps done
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('stepEl' + i).classList.add('done');
+        document.getElementById('stepEl' + i).classList.remove('active');
+        document.getElementById('stepNum' + i).textContent = '✓';
+      }
+      for (let i = 1; i <= 3; i++) document.getElementById('stepLine' + i).classList.add('done');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Maruti Suzuki Fronx — JK Car</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#0a1628;--blue:#0d47a1;--blue-mid:#1565c0;--accent:#f5a623;--green:#22c55e;--light:#f0f4ff;--white:#fff;--gray:#8492a6;--border:rgba(13,71,161,0.10);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{background:var(--light);color:var(--navy);font-family:'Outfit',sans-serif;line-height:1.6;}
+    header{position:sticky;top:0;z-index:1000;background:rgba(10,22,40,0.97);backdrop-filter:blur(12px);display:flex;justify-content:space-between;align-items:center;padding:0 60px;height:70px;border-bottom:1px solid rgba(245,166,35,0.15);transition:box-shadow 0.3s;}
+    header.scrolled{box-shadow:0 4px 30px rgba(0,0,0,0.35);}
+    .logo{font-size:24px;font-weight:900;color:#fff;letter-spacing:-1px;text-decoration:none;display:flex;align-items:center;gap:8px;}.logo span{color:var(--accent);}
+    .logo-icon{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+    nav{display:flex;align-items:center;gap:4px;}nav a{color:rgba(255,255,255,0.70);text-decoration:none;font-weight:500;font-size:14px;padding:7px 14px;border-radius:6px;transition:all 0.2s;}nav a:hover{color:#fff;background:rgba(255,255,255,0.08);}
+    .nav-cta{background:var(--accent)!important;color:var(--navy)!important;font-weight:700!important;margin-left:6px;}.nav-cta:hover{background:#e6941a!important;}
+    .breadcrumb{background:#fff;padding:12px 60px;border-bottom:1px solid var(--border);font-size:13px;color:var(--gray);}.breadcrumb a{color:var(--blue);text-decoration:none;font-weight:500;}.breadcrumb a:hover{text-decoration:underline;}.breadcrumb span{margin:0 8px;}
+    .hero-section{padding:40px 60px;position:relative;overflow:hidden;}
+    .hero-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;}
+    .hero-text .badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:12px;}
+    .hero-text h1{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);color:#fff;line-height:1.1;margin-bottom:8px;}
+    .hero-text .sub{font-size:16px;color:rgba(255,255,255,0.5);font-weight:300;}
+    .hero-price{text-align:right;}.price-label{font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+    .price-big{font-size:38px;font-weight:900;color:var(--accent);line-height:1;}.price-note{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;}
+    .main-wrap{display:grid;grid-template-columns:1fr 380px;gap:28px;padding:32px 60px 60px;max-width:1400px;margin:0 auto;}
+    .left-col{display:flex;flex-direction:column;gap:24px;}
+    .gallery-card{background:#fff;border-radius:20px;overflow:hidden;border:1.5px solid var(--border);}
+    .main-img-wrap{position:relative;height:360px;background:#0a1628;overflow:hidden;}
+    .main-img-wrap img{width:100%;height:100%;object-fit:cover;transition:opacity 0.4s;}
+    .gallery-badge{position:absolute;top:16px;left:16px;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+    .img-nav{position:absolute;bottom:16px;right:16px;display:flex;gap:8px;}
+    .img-nav button{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;font-size:16px;cursor:pointer;backdrop-filter:blur(4px);transition:all 0.2s;}
+    .img-counter{position:absolute;bottom:20px;left:16px;font-size:12px;color:rgba(255,255,255,0.6);font-weight:500;}
+    .thumbnails{display:flex;gap:10px;padding:14px 18px;overflow-x:auto;}
+    .thumb{width:80px;height:56px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;flex-shrink:0;opacity:0.65;}
+    .thumb.active{border-color:var(--blue);opacity:1;}.thumb:hover{opacity:1;}
+    .colour-card,.tabs-card,.emi-card,.quick-specs-card,.compare-card{background:#fff;border-radius:20px;border:1.5px solid var(--border);}
+    .colour-card,.emi-card,.quick-specs-card,.compare-card{padding:22px 24px;}
+    .colour-title{font-size:13px;font-weight:700;color:var(--gray);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+    .emi-card-title,.quick-specs-title,.compare-card-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px;}
+    .colour-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+    .colour-dot{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all 0.2s;}
+    .colour-dot:hover{transform:scale(1.15);}.colour-dot.selected{border-color:var(--blue);box-shadow:0 0 0 3px rgba(13,71,161,0.2);}
+    .colour-name{font-size:13px;color:var(--gray);margin-left:8px;font-weight:500;}
+    .tab-bar{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;}
+    .tab-btn{padding:14px 22px;border:none;background:transparent;font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;color:var(--gray);cursor:pointer;white-space:nowrap;transition:all 0.2s;border-bottom:3px solid transparent;margin-bottom:-1px;}
+    .tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
+    .tab-pane{display:none;padding:28px;}.tab-pane.active{display:block;animation:fadeUp 0.3s ease both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    .specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+    .spec-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);}
+    .spec-row:nth-child(odd){background:rgba(13,71,161,0.02);}.spec-row:last-child{border-bottom:none;}
+    .spec-key{font-size:13px;color:var(--gray);font-weight:400;}.spec-val{font-size:13px;color:var(--navy);font-weight:700;text-align:right;}
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+    .feature-item{display:flex;align-items:flex-start;gap:10px;padding:14px;border:1.5px solid var(--border);border-radius:12px;transition:all 0.2s;}
+    .feature-item:hover{border-color:rgba(13,71,161,0.25);background:rgba(13,71,161,0.02);}
+    .feature-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+    .ft{font-size:12px;font-weight:700;color:var(--navy);}.fd{font-size:11px;color:var(--gray);font-weight:300;margin-top:2px;}
+    .safety-wrap{display:flex;align-items:center;gap:32px;padding:16px;background:var(--light);border-radius:14px;margin-bottom:20px;}
+    .safety-score{text-align:center;}.safety-num{font-size:48px;font-weight:900;color:var(--green);line-height:1;}
+    .safety-label{font-size:11px;font-weight:700;color:var(--gray);letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+    .safety-stars{font-size:22px;color:var(--accent);letter-spacing:2px;margin-top:4px;}
+    .safety-list{flex:1;display:flex;flex-direction:column;gap:8px;}
+    .safety-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--navy);}
+    .safety-item .si-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;}
+    .variants-table{width:100%;border-collapse:collapse;font-size:13px;}
+    .variants-table th{background:var(--navy);color:rgba(255,255,255,0.65);padding:12px 16px;text-align:left;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+    .variants-table td{padding:13px 16px;border-bottom:1px solid var(--border);color:var(--navy);}
+    .variants-table tr:hover td{background:rgba(13,71,161,0.03);}.price-cell{font-weight:800;color:var(--blue);}
+    .var-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(245,166,35,0.12);color:#c88a00;margin-left:6px;}
+    .right-col{display:flex;flex-direction:column;gap:20px;}
+    .action-card{background:var(--navy);border-radius:20px;padding:28px;color:white;}
+    .ac-price-label{font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+    .ac-price{font-size:36px;font-weight:900;color:var(--accent);line-height:1;margin-bottom:4px;}
+    .ac-price-note{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;}
+    .ac-actions{display:flex;flex-direction:column;gap:10px;}
+    .btn-book-main{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:var(--navy);font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;padding:14px;border-radius:12px;text-decoration:none;border:none;cursor:pointer;transition:all 0.25s;width:100%;}
+    .btn-book-main:hover{background:#e6941a;transform:translateY(-2px);}
+    .btn-test{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,0.07);color:white;font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;padding:12px;border-radius:12px;text-decoration:none;border:1px solid rgba(255,255,255,0.15);cursor:pointer;transition:all 0.2s;width:100%;}
+    .btn-test:hover{background:rgba(255,255,255,0.12);}
+    .btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;background:#25d366;color:white;font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;padding:12px;border-radius:12px;text-decoration:none;border:none;cursor:pointer;transition:all 0.2s;width:100%;}
+    .btn-wa:hover{background:#1ebe5d;}
+    .ac-divider{height:1px;background:rgba(255,255,255,0.08);margin:18px 0;}
+    .ac-highlights{display:flex;flex-direction:column;gap:10px;}
+    .ac-hl{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.6);}
+    .ac-hl-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
+    .emi-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+    .emi-row label{font-size:12px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:0.6px;}
+    .emi-row .emi-val{font-size:13px;font-weight:700;color:var(--navy);}
+    .emi-slider{width:100%;accent-color:var(--blue);margin:6px 0 12px;}
+    .emi-result-box{background:var(--light);border-radius:12px;padding:16px;text-align:center;margin-top:14px;border:1.5px solid var(--border);}
+    .emi-monthly{font-size:28px;font-weight:900;color:var(--blue);}.emi-monthly-label{font-size:11px;color:var(--gray);margin-top:3px;}
+    .btn-full-emi{display:block;text-align:center;background:var(--blue);color:white;font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;padding:10px;border-radius:10px;text-decoration:none;margin-top:12px;transition:all 0.2s;border:none;cursor:pointer;width:100%;}
+    .btn-full-emi:hover{background:var(--blue-mid);}
+    .qs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .qs-item{background:var(--light);border-radius:12px;padding:14px;text-align:center;}
+    .qs-icon{font-size:20px;margin-bottom:6px;}.qs-val{font-size:15px;font-weight:800;color:var(--navy);line-height:1;}
+    .qs-label{font-size:10px;color:var(--gray);font-weight:400;text-transform:uppercase;letter-spacing:0.8px;margin-top:3px;}
+    .compare-status{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--gray);margin-bottom:14px;}
+    .compare-dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background 0.3s;}
+    .compare-dot.filled{background:var(--green);}
+    .btn-compare{width:100%;background:var(--light);border:1.5px solid var(--border);border-radius:10px;font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;color:var(--navy);padding:11px;cursor:pointer;transition:all 0.2s;}
+    .btn-compare:hover{border-color:var(--blue);color:var(--blue);}.btn-compare.added{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.3);color:var(--green);}
+    .similar-section{padding:0 60px 60px;}
+    .sec-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
+    .sec-title{font-family:'Playfair Display',serif;font-size:26px;color:var(--navy);margin-bottom:24px;}
+    .similar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .similar-card{background:#fff;border-radius:16px;overflow:hidden;border:1.5px solid var(--border);transition:all 0.3s;text-decoration:none;color:var(--navy);display:block;}
+    .similar-card:hover{transform:translateY(-5px);box-shadow:0 14px 40px rgba(13,71,161,0.10);}
+    .similar-img{height:150px;background:var(--light);overflow:hidden;}.similar-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s;}
+    .similar-card:hover .similar-img img{transform:scale(1.06);}
+    .similar-info{padding:16px;}.similar-brand{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#1a5c8a;text-transform:uppercase;margin-bottom:4px;}
+    .similar-name{font-size:16px;font-weight:700;margin-bottom:8px;}.similar-price{font-size:16px;font-weight:800;color:var(--blue);}
+    footer{background:var(--navy);padding:36px 60px 28px;color:rgba(255,255,255,0.5);}
+    .footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;font-size:13px;}
+    .footer-social{display:flex;gap:16px;}.footer-social a,.footer-links a{color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.2s;}
+    .footer-social a:hover,.footer-links a:hover{color:var(--accent);}.footer-links{display:flex;gap:20px;}
+    @media(max-width:1100px){.main-wrap{grid-template-columns:1fr;}.similar-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:768px){header{padding:0 20px;}nav{display:none;}.main-wrap{padding:20px;}.hero-section{padding:32px 20px;}.hero-inner{flex-direction:column;align-items:flex-start;}.hero-price{text-align:left;}.breadcrumb{padding:12px 20px;}.similar-section{padding:0 20px 50px;}.similar-grid{grid-template-columns:1fr;}.features-grid{grid-template-columns:repeat(2,1fr);}.specs-grid{grid-template-columns:1fr;}footer{padding:30px 20px 24px;}}
+    ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--light);}::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px;}
+
+    .hero-section{background:var(--navy);}
+    .hero-section::before{content:'';position:absolute;top:-60px;right:-60px;width:320px;height:320px;border-radius:50%;background:rgba(26,92,138,0.20);}
+    .hero-text .badge{background:rgba(26,92,138,0.28);border:1px solid rgba(100,181,246,0.40);color:#90caf9;}
+    .gallery-badge{background:rgba(26,92,138,0.28);color:#fff;}
+  </style>
+</head>
+<body>
+  <header id="mainHeader">
+    <a href="../index.html" class="logo"><div class="logo-icon">🚗</div>JK<span>Car</span></a>
+    <nav><a href="../index.html">Home</a><a href="../brands/suzuki.html">Maruti Suzuki</a><a href="../compare.html">Compare</a><a href="../emi-calculator.html">EMI Calculator</a><a href="../search.html">Search</a><a href="../booking.html" class="nav-cta">Book a Car</a></nav>
+  </header>
+  <div class="breadcrumb"><a href="../index.html">Home</a><span>›</span><a href="../brands/suzuki.html">Maruti Suzuki</a><span>›</span>Maruti Suzuki Fronx</div>
+
+  <div class="hero-section">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="badge">✨ Sporty Crossover</div>
+        <h1>Maruti Suzuki Fronx<br><span style="color:rgba(255,255,255,0.45);font-style:normal;font-size:0.55em;font-family:'Outfit',sans-serif;font-weight:300">Alpha Turbo — Top Variant</span></h1>
+        <div class="sub">1.0L K10C Boosterjet Turbo · 5 Persons · 6-Speed AMT / 5-MT</div>
+      </div>
+      <div class="hero-price"><div class="price-label">Starting Price</div><div class="price-big">₹8.28 L</div><div class="price-note">onwards · ex-showroom Chennai</div></div>
+    </div>
+  </div>
+
+  <div class="main-wrap">
+    <div class="left-col">
+      <div class="gallery-card">
+        <div class="main-img-wrap">
+          <img id="mainImg" src="fronx.jpg" alt="Maruti Suzuki Fronx" onerror="this.src='https://via.placeholder.com/900x360/1a5c8a/ffffff?text=Maruti+Suzuki+Fronx'" >
+          <div class="gallery-badge">✨ Sporty Crossover</div>
+          <div class="img-counter" id="imgCounter">1 / 3</div>
+          <div class="img-nav"><button onclick="changeImg(-1)">‹</button><button onclick="changeImg(1)">›</button></div>
+        </div>
+        <div class="thumbnails">
+          <img class="thumb active" src="fronx.jpg" onerror="this.src='https://via.placeholder.com/80x56/1a5c8a/fff?text=1'" onclick="setImg(0)">
+          <img class="thumb" src="fronx.jpg" onerror="this.src='https://via.placeholder.com/80x56/1565c0/fff?text=2'" onclick="setImg(1)">
+          <img class="thumb" src="fronx.jpg" onerror="this.src='https://via.placeholder.com/80x56/37474f/fff?text=3'" onclick="setImg(2)">
+        </div>
+      </div>
+
+      <div class="colour-card">
+        <div class="colour-title">Available Colours</div>
+        <div class="colour-row"><div class="colour-dot selected" style="background:#1a1a1a" onclick="selectColour(this,'Midnight Black')"></div>
+<div class="colour-dot" style="background:#f5f5f0;border:1px solid #ddd" onclick="selectColour(this,'Splendid Silver')"></div>
+<div class="colour-dot" style="background:#e53935" onclick="selectColour(this,'Opulent Red')"></div>
+<div class="colour-dot" style="background:#ffa000" onclick="selectColour(this,'Earthen Brown')"></div>
+<div class="colour-dot" style="background:#607d8b" onclick="selectColour(this,'Nexa Blue')"></div>
+<div class="colour-dot" style="background:#c2185b" onclick="selectColour(this,'Pearl Midnight Blue')"></div>
+<span class="colour-name" id="colourName">Midnight Black</span></div>
+      </div>
+
+      <div class="tabs-card">
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="openTab('specs',this)">Specifications</button>
+          <button class="tab-btn" onclick="openTab('features',this)">Features</button>
+          <button class="tab-btn" onclick="openTab('safety',this)">Safety</button>
+          <button class="tab-btn" onclick="openTab('variants',this)">Variants & Price</button>
+        </div>
+        <div class="tab-pane active" id="tab-specs"><div class="specs-grid"><div class="spec-row"><span class="spec-key">Engine</span><span class="spec-val">1.0L K10C Boosterjet Turbo</span></div><div class="spec-row"><span class="spec-key">Max Power</span><span class="spec-val">100 bhp @ 5500 rpm</span></div><div class="spec-row"><span class="spec-key">Max Torque</span><span class="spec-val">148 Nm @ 2000–4500</span></div><div class="spec-row"><span class="spec-key">Transmission</span><span class="spec-val">6-Speed AMT / 5-MT</span></div><div class="spec-row"><span class="spec-key">Drive Type</span><span class="spec-val">FWD</span></div><div class="spec-row"><span class="spec-key">Mileage (ARAI)</span><span class="spec-val">21.79 km/l</span></div><div class="spec-row"><span class="spec-key">Fuel Type</span><span class="spec-val">Petrol / CNG</span></div><div class="spec-row"><span class="spec-key">Fuel Tank</span><span class="spec-val">37 Litres</span></div><div class="spec-row"><span class="spec-key">Seating Capacity</span><span class="spec-val">5 Persons</span></div><div class="spec-row"><span class="spec-key">Boot Space</span><span class="spec-val">308 Litres</span></div><div class="spec-row"><span class="spec-key">Length × Width × Height</span><span class="spec-val">3995 × 1765 × 1550 mm</span></div><div class="spec-row"><span class="spec-key">Wheelbase</span><span class="spec-val">2520 mm</span></div><div class="spec-row"><span class="spec-key">Ground Clearance</span><span class="spec-val">190 mm</span></div><div class="spec-row"><span class="spec-key">Kerb Weight</span><span class="spec-val">940 kg</span></div><div class="spec-row"><span class="spec-key">Tyres</span><span class="spec-val">195/60 R16</span></div><div class="spec-row"><span class="spec-key">Warranty</span><span class="spec-val">2 Years / 40,000 km</span></div></div></div>
+        <div class="tab-pane" id="tab-features"><div class="features-grid"><div class="feature-item"><div class="feature-icon">📺</div><div><div class="ft">9" SmartPlay Pro+</div><div class="fd">Wireless Android Auto & CarPlay</div></div></div><div class="feature-item"><div class="feature-icon">🌅</div><div><div class="ft">Electric Sunroof</div><div class="fd">One-touch panoramic glass</div></div></div><div class="feature-item"><div class="feature-icon">💡</div><div><div class="ft">LED Projector Headlamps</div><div class="fd">Signature DRL design</div></div></div><div class="feature-item"><div class="feature-icon">🎮</div><div><div class="ft">7" TFT Cluster</div><div class="fd">Digital sport display</div></div></div><div class="feature-item"><div class="feature-icon">📷</div><div><div class="ft">Rear Camera</div><div class="fd">Parking camera + sensors</div></div></div><div class="feature-item"><div class="feature-icon">🌡</div><div><div class="ft">Auto Climate Control</div><div class="fd">Single zone</div></div></div><div class="feature-item"><div class="feature-icon">🔑</div><div><div class="ft">Smart Key Entry</div><div class="fd">Push-button start</div></div></div><div class="feature-item"><div class="feature-icon">🪑</div><div><div class="ft">Leatherette Seats</div><div class="fd">Sport-look cabin</div></div></div><div class="feature-item"><div class="feature-icon">📱</div><div><div class="ft">Suzuki Connect</div><div class="fd">OTA + vehicle tracking</div></div></div><div class="feature-item"><div class="feature-icon">🔊</div><div><div class="ft">6-Speaker Audio</div><div class="fd">Surround sound</div></div></div><div class="feature-item"><div class="feature-icon">🔋</div><div><div class="ft">USB Type-C</div><div class="fd">Fast front charging</div></div></div><div class="feature-item"><div class="feature-icon">🚗</div><div><div class="ft">Lane Departure Warning</div><div class="fd">ADAS basic safety</div></div></div></div></div>
+        <div class="tab-pane" id="tab-safety">
+          <div class="safety-wrap">
+            <div class="safety-score"><div class="safety-num">3</div><div class="safety-stars">★★★☆☆</div><div class="safety-label">Safety Rating</div></div>
+            <div class="safety-list"><div class="safety-item"><div class="si-dot"></div>Dual Airbags (top variants 6)</div><div class="safety-item"><div class="si-dot"></div>ABS with EBD</div><div class="safety-item"><div class="si-dot"></div>Electronic Stability Program (ESP)</div><div class="safety-item"><div class="si-dot"></div>Hill Hold Assist</div><div class="safety-item"><div class="si-dot"></div>TPMS — Tyre Pressure Monitor</div><div class="safety-item"><div class="si-dot"></div>Rear Parking Sensors + Camera</div><div class="safety-item"><div class="si-dot"></div>Child Seat ISOFIX Anchors</div><div class="safety-item"><div class="si-dot"></div>Immobiliser + Engine Guard</div></div>
+          </div>
+          <p style="font-size:13px;color:var(--gray);font-weight:300;line-height:1.8;">The Fronx combines turbo performance with crossover styling. <strong style='color:var(--navy)'>6 airbags on Alpha variant</strong> with ABS, ESC, and ISOFIX anchors — Maruti's safest crossover at this price.</p>
+        </div>
+        <div class="tab-pane" id="tab-variants">
+          <table class="variants-table"><thead><tr><th>Variant</th><th>Fuel</th><th>Transmission</th><th>Price</th></tr></thead><tbody><tr><td>Sigma <span class="var-badge">Entry</span></td><td>Petrol 1.2</td><td>Manual</td><td class="price-cell">₹8.28 L</td></tr><tr><td>Delta</td><td>Petrol 1.2</td><td>Manual / AMT</td><td class="price-cell">₹9.60 L</td></tr><tr><td>Zeta Turbo</td><td>Petrol 1.0</td><td>AMT</td><td class="price-cell">₹11.30 L</td></tr><tr><td>Alpha Turbo <span class="var-badge">Top</span></td><td>Petrol 1.0</td><td>AMT</td><td class="price-cell">₹13.25 L</td></tr><tr><td>Delta CNG</td><td>CNG 1.2</td><td>Manual</td><td class="price-cell">₹10.74 L</td></tr></tbody></table>
+          <p style="font-size:12px;color:var(--gray);margin-top:14px;font-weight:300;">* Prices are ex-showroom Chennai. Contact JK Car for on-road pricing.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="action-card">
+        <div class="ac-price-label">Starting Price</div>
+        <div class="ac-price">₹8.28 L</div>
+        <div class="ac-price-note">onwards · ex-showroom Chennai</div>
+        <div class="ac-actions">
+          <a href="../booking.html" class="btn-book-main">🚗 Book Online</a>
+          <a href="../booking.html" class="btn-test">📅 Book Test Drive</a>
+          <a href="https://wa.me/919361301371?text=Hi!%20I'm%20interested%20in%20Maruti%20Suzuki%20Fronx." target="_blank" class="btn-wa">💬 Chat on WhatsApp</a>
+        </div>
+        <div class="ac-divider"></div>
+        <div class="ac-highlights"><div class="ac-hl"><div class="ac-hl-dot"></div>Zero down payment available</div><div class="ac-hl"><div class="ac-hl-dot"></div>Delivery in 1–2 weeks</div><div class="ac-hl"><div class="ac-hl-dot"></div>Free 1st service at JK Car</div><div class="ac-hl"><div class="ac-hl-dot"></div>Best resale value in India</div></div>
+      </div>
+      <div class="quick-specs-card">
+        <div class="quick-specs-title">Quick Specs</div>
+        <div class="qs-grid"><div class="qs-item"><div class="qs-icon">⛽</div><div class="qs-val">Petrol Turbo</div><div class="qs-label">Fuel</div></div><div class="qs-item"><div class="qs-icon">🛣</div><div class="qs-val">21.79 km/l</div><div class="qs-label">Mileage</div></div><div class="qs-item"><div class="qs-icon">⚙</div><div class="qs-val">100 bhp</div><div class="qs-label">Power</div></div><div class="qs-item"><div class="qs-icon">💪</div><div class="qs-val">148 Nm</div><div class="qs-label">Torque</div></div><div class="qs-item"><div class="qs-icon">👥</div><div class="qs-val">5</div><div class="qs-label">Seats</div></div><div class="qs-item"><div class="qs-icon">🧳</div><div class="qs-val">308 L</div><div class="qs-label">Boot</div></div><div class="qs-item"><div class="qs-icon">🏔</div><div class="qs-val">190 mm</div><div class="qs-label">Clearance</div></div><div class="qs-item"><div class="qs-icon">🛡</div><div class="qs-val">3 ★</div><div class="qs-label">Safety</div></div></div>
+      </div>
+      <div class="emi-card">
+        <div class="emi-card-title">💳 Quick EMI Calculator</div>
+        <div class="emi-row"><label>Loan Amount</label><span class="emi-val" id="emiLoanVal">—</span></div>
+        <input type="range" class="emi-slider" id="emiLoan" min="500000" max="1600000" step="25000" value="1000000" oninput="calcEMI()">
+        <div class="emi-row"><label>Interest Rate</label><span class="emi-val" id="emiRateVal">9.0%</span></div>
+        <input type="range" class="emi-slider" id="emiRate" min="6" max="18" step="0.5" value="9" oninput="calcEMI()">
+        <div class="emi-row"><label>Tenure</label><span class="emi-val" id="emiTenureVal">60 months</span></div>
+        <input type="range" class="emi-slider" id="emiTenure" min="12" max="84" step="6" value="60" oninput="calcEMI()">
+        <div class="emi-result-box"><div class="emi-monthly" id="emiResult">—</div><div class="emi-monthly-label">Estimated Monthly EMI</div></div>
+        <a href="../emi-calculator.html" class="btn-full-emi">Open Full EMI Calculator →</a>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">⚖ Add to Compare</div>
+        <div class="compare-status">
+          <div class="compare-dot filled" id="cd1"></div><div class="compare-dot" id="cd2"></div><div class="compare-dot" id="cd3"></div>
+          <span id="compareStatusText">Maruti Suzuki Fronx added</span>
+        </div>
+        <button class="btn-compare added" id="compareBtn" onclick="toggleCompare()">✓ Added to Compare</button>
+        <div style="margin-top:10px;"><a href="../compare.html" style="font-size:12px;color:var(--blue);text-decoration:none;font-weight:600;">View Compare Page →</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="similar-section">
+    <div class="sec-label">You Might Also Like</div>
+    <h2 class="sec-title">Similar Cars to Consider</h2>
+    <div class="similar-grid"><a href="baleno.html" class="similar-card"><div class="similar-img"><img src="baleno.jpg" alt="Baleno Alpha" onerror="this.src='https://via.placeholder.com/400x150/1a5c8a/fff?text=Baleno+Alpha'"></div><div class="similar-info"><div class="similar-brand">Maruti Suzuki</div><div class="similar-name">Baleno Alpha</div><div class="similar-price">₹8.00 L <span style="font-size:11px;font-weight:400;color:var(--gray)">onwards</span></div></div></a><a href="swift.html" class="similar-card"><div class="similar-img"><img src="swift.jpg" alt="Swift ZXi+" onerror="this.src='https://via.placeholder.com/400x150/1a5c8a/fff?text=Swift+ZXi+'"></div><div class="similar-info"><div class="similar-brand">Maruti Suzuki</div><div class="similar-name">Swift ZXi+</div><div class="similar-price">₹6.00 L <span style="font-size:11px;font-weight:400;color:var(--gray)">onwards</span></div></div></a><a href="brezza.html" class="similar-card"><div class="similar-img"><img src="brezza.jpg" alt="Brezza ZXi+" onerror="this.src='https://via.placeholder.com/400x150/1a5c8a/fff?text=Brezza+ZXi+'"></div><div class="similar-info"><div class="similar-brand">Maruti Suzuki</div><div class="similar-name">Brezza ZXi+</div><div class="similar-price">₹9.72 L <span style="font-size:11px;font-weight:400;color:var(--gray)">onwards</span></div></div></a></div>
+  </div>
+
+  <footer><div class="footer-bottom"><span>© 2026 JK Car. All rights reserved.</span><div class="footer-social"><a href="https://www.instagram.com/_._jagazz_._kingzz_._/" target="_blank">📸 Instagram</a><a href="https://wa.me/919361301371" target="_blank">💬 WhatsApp</a><a href="mailto:jaganjk1018@gmail.com">✉️ Email</a></div><div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms</a></div></div></footer>
+
+  <script>
+    const imgs=["fronx.jpg","fronx.jpg","fronx.jpg"];let curImg=0;
+    const carName="Fronx";
+    
+    window.addEventListener('scroll',()=>document.getElementById('mainHeader').classList.toggle('scrolled',window.scrollY>50));
+    function setImg(i){curImg=i;document.getElementById('mainImg').src=imgs[i];document.querySelectorAll('.thumb').forEach((t,idx)=>t.classList.toggle('active',idx===i));document.getElementById('imgCounter').textContent=(i+1)+' / '+imgs.length;}
+    function changeImg(d){setImg((curImg+d+imgs.length)%imgs.length);}
+    function selectColour(el,name){document.querySelectorAll('.colour-dot').forEach(d=>d.classList.remove('selected'));el.classList.add('selected');document.getElementById('colourName').textContent=name;}
+    function openTab(id,btn){document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');}
+    function fmtINR(n){return '₹'+Math.round(n).toLocaleString('en-IN');}
+    function calcEMI(){const P=parseInt(document.getElementById('emiLoan').value);const r=parseFloat(document.getElementById('emiRate').value)/12/100;const n=parseInt(document.getElementById('emiTenure').value);const emi=P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);document.getElementById('emiLoanVal').textContent=fmtINR(P);document.getElementById('emiRateVal').textContent=document.getElementById('emiRate').value+'%';document.getElementById('emiTenureVal').textContent=n+' months';document.getElementById('emiResult').textContent=fmtINR(emi);}
+    calcEMI();
+    let inCompare=true;
+    function toggleCompare(){inCompare=!inCompare;const btn=document.getElementById('compareBtn');btn.classList.toggle('added',inCompare);btn.textContent=inCompare?'✓ Added to Compare':'+ Add to Compare';document.getElementById('cd1').classList.toggle('filled',inCompare);document.getElementById('compareStatusText').textContent=inCompare?carName+' added':'Not in compare list';}
+
+  </script>
+</body>
+</html>

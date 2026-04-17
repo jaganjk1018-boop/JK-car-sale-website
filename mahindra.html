@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mahindra Cars — JK Car</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:    #0a1628;
+      --blue:    #0d47a1;
+      --blue-mid:#1565c0;
+      --accent:  #f5a623;
+      --green:   #22c55e;
+      --light:   #f0f4ff;
+      --white:   #ffffff;
+      --gray:    #8492a6;
+      --border:  rgba(13,71,161,0.10);
+      /* Brand colour — change per brand */
+      --brand:   #c0392b;
+      --brand-light: rgba(192,57,43,0.08);
+      --brand-mid:   rgba(192,57,43,0.18);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--light); color: var(--navy); font-family: 'Outfit', sans-serif; line-height: 1.6; }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(10,22,40,0.97); backdrop-filter: blur(12px);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 60px; height: 70px;
+      border-bottom: 1px solid rgba(245,166,35,0.15); transition: box-shadow 0.3s;
+    }
+    header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.35); }
+    .logo { font-size: 24px; font-weight: 900; color: var(--white); letter-spacing: -1px; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .logo span { color: var(--accent); }
+    .logo-icon { width: 34px; height: 34px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    nav { display: flex; align-items: center; gap: 4px; }
+    nav a { color: rgba(255,255,255,0.70); text-decoration: none; font-weight: 500; font-size: 14px; padding: 7px 14px; border-radius: 6px; transition: all 0.2s; }
+    nav a:hover, nav a.active { color: var(--white); background: rgba(255,255,255,0.08); }
+    .nav-cta { background: var(--accent) !important; color: var(--navy) !important; font-weight: 700 !important; margin-left: 6px; }
+    .nav-cta:hover { background: #e6941a !important; }
+
+    /* ── BRAND HERO ── */
+    .brand-hero {
+      background: var(--navy);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+    }
+    .brand-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(105deg, rgba(10,22,40,0.97) 40%, rgba(192,57,43,0.35) 100%);
+      z-index: 1;
+    }
+    /* decorative large brand initial */
+    .brand-hero::after {
+      content: 'M';
+      position: absolute; right: 5%; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 340px; font-weight: 700;
+      color: rgba(255,255,255,0.03);
+      line-height: 1;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .brand-hero-inner {
+      position: relative; z-index: 2;
+      padding: 70px 60px;
+      display: flex; align-items: center; gap: 60px;
+      width: 100%;
+    }
+    .brand-logo-big {
+      width: 130px; height: 130px;
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .brand-logo-big img { width: 88px; height: 88px; object-fit: contain; filter: brightness(1.1); }
+    .brand-logo-big .brand-initials { font-size: 48px; font-weight: 900; color: var(--brand); }
+
+    .brand-hero-text { flex: 1; }
+    .brand-tag { display: inline-flex; align-items: center; gap: 7px; background: var(--brand-mid); border: 1px solid rgba(192,57,43,0.3); color: #e57373; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 16px; }
+    .brand-hero-text h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 58px); color: var(--white); line-height: 1.1; margin-bottom: 14px; }
+    .brand-hero-text h1 em { color: var(--brand); font-style: italic; }
+    .brand-hero-text p { font-size: 16px; color: rgba(255,255,255,0.55); font-weight: 300; max-width: 480px; line-height: 1.8; margin-bottom: 28px; }
+    .hero-stats { display: flex; gap: 36px; flex-wrap: wrap; }
+    .hstat { }
+    .hstat-num { font-size: 26px; font-weight: 800; color: var(--white); line-height: 1; }
+    .hstat-num span { color: var(--accent); }
+    .hstat-label { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 400; margin-top: 3px; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 18px 60px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+      position: sticky; top: 70px; z-index: 100;
+    }
+    .filter-label { font-size: 12px; font-weight: 700; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-right: 4px; }
+    .filter-btn {
+      padding: 8px 16px; border-radius: 20px;
+      border: 1.5px solid var(--border); background: var(--light);
+      font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600;
+      color: var(--gray); cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .filter-btn.active { border-color: var(--blue); background: rgba(13,71,161,0.08); color: var(--blue); }
+    .filter-count { margin-left: auto; font-size: 13px; color: var(--gray); }
+    .filter-count strong { color: var(--navy); font-weight: 700; }
+
+    /* ── MODELS SECTION ── */
+    .models-section { padding: 48px 60px 70px; }
+    .models-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+
+    /* ── CAR CARD ── */
+    .car-card {
+      background: var(--white); border-radius: 20px; overflow: hidden;
+      border: 1.5px solid var(--border); transition: all 0.32s;
+      cursor: pointer; animation: fadeUp 0.4s ease both;
+    }
+    .car-card:hover { transform: translateY(-7px); box-shadow: 0 20px 52px rgba(13,71,161,0.12); border-color: rgba(13,71,161,0.22); }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    .car-img-wrap { position: relative; height: 200px; background: var(--light); overflow: hidden; }
+    .car-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .car-card:hover .car-img-wrap img { transform: scale(1.06); }
+
+    .car-badge { position: absolute; top: 12px; left: 12px; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
+    .badge-hot     { background: #ef4444; color: white; }
+    .badge-new     { background: #22c55e; color: white; }
+    .badge-premium { background: #7c3aed; color: white; }
+    .badge-ev      { background: #06b6d4; color: white; }
+    .badge-offer   { background: var(--accent); color: var(--navy); }
+
+    .wishlist-btn {
+      position: absolute; top: 10px; right: 10px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.9); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .wishlist-btn:hover { transform: scale(1.15); }
+    .wishlist-btn.liked { background: #fee2e2; }
+
+    .car-info { padding: 20px 22px 22px; }
+    .car-brand-tag { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--brand); margin-bottom: 4px; }
+    .car-name { font-size: 18px; font-weight: 700; margin-bottom: 10px; line-height: 1.25; }
+    .car-specs { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+    .spec { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--gray); }
+
+    .car-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1px solid var(--border); }
+    .car-price { font-size: 20px; font-weight: 800; color: var(--blue); line-height: 1; }
+    .car-price small { font-size: 11px; font-weight: 400; color: var(--gray); display: block; margin-top: 2px; }
+    .car-actions { display: flex; gap: 8px; }
+    .btn-details, .btn-book {
+      font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 12px;
+      padding: 8px 14px; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-details { background: var(--light); color: var(--navy); border: 1.5px solid var(--border); }
+    .btn-details:hover { border-color: var(--blue); color: var(--blue); }
+    .btn-book { background: var(--blue); color: white; border: none; }
+    .btn-book:hover { background: var(--blue-mid); transform: translateY(-1px); }
+
+    /* ── ABOUT BRAND ── */
+    .about-section {
+      background: var(--navy); padding: 70px 60px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center;
+    }
+    .about-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--brand); margin-bottom: 12px; }
+    .about-title { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3.5vw, 38px); color: var(--white); margin-bottom: 18px; line-height: 1.2; }
+    .about-body { font-size: 15px; color: rgba(255,255,255,0.55); font-weight: 300; line-height: 1.85; margin-bottom: 28px; }
+    .about-highlights { display: flex; flex-direction: column; gap: 14px; }
+    .about-highlight { display: flex; align-items: flex-start; gap: 14px; }
+    .ah-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .ah-title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+    .ah-desc { font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 300; }
+
+    .about-cards { display: flex; flex-direction: column; gap: 16px; }
+    .about-stat-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; padding: 22px 24px;
+      display: flex; align-items: center; gap: 18px; transition: all 0.3s;
+    }
+    .about-stat-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(192,57,43,0.3); }
+    .asc-icon { font-size: 28px; }
+    .asc-num { font-size: 24px; font-weight: 800; color: var(--accent); line-height: 1; }
+    .asc-label { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 300; }
+
+    /* ── OFFERS STRIP ── */
+    .offers-section { background: var(--white); padding: 50px 60px; }
+    .offers-header { margin-bottom: 30px; }
+    .offers-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+    .offers-title { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--navy); }
+    .offers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .offer-card {
+      border: 1.5px solid var(--border); border-radius: 16px; padding: 24px;
+      transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .offer-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--brand); border-radius: 4px 0 0 4px; }
+    .offer-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(13,71,161,0.09); border-color: rgba(13,71,161,0.2); }
+    .offer-icon { font-size: 28px; margin-bottom: 12px; }
+    .offer-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .offer-desc { font-size: 13px; color: var(--gray); font-weight: 300; line-height: 1.7; }
+    .offer-tag { display: inline-block; background: var(--brand-light); color: var(--brand); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 10px; margin-top: 12px; }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: linear-gradient(120deg, var(--blue) 0%, #1a237e 100%);
+      padding: 64px 60px; text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-section::before { content:''; position:absolute; top:-60px; right:-60px; width:280px; height:280px; border-radius:50%; background:rgba(255,255,255,0.04); }
+    .cta-title { font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 44px); color: white; margin-bottom: 12px; position: relative; z-index: 1; }
+    .cta-sub { font-size: 16px; color: rgba(255,255,255,0.6); margin-bottom: 34px; font-weight: 300; position: relative; z-index: 1; }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--navy); font-weight: 700; font-size: 15px; padding: 14px 30px; border-radius: 10px; text-decoration: none; transition: all 0.25s; }
+    .btn-primary:hover { background: #e6941a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,166,35,0.35); }
+    .btn-outline-w { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: white; font-weight: 600; font-size: 15px; padding: 13px 28px; border-radius: 10px; text-decoration: none; border: 1.5px solid rgba(255,255,255,0.3); transition: all 0.25s; }
+    .btn-outline-w:hover { background: rgba(255,255,255,0.08); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--navy); padding: 36px 60px 28px; color: rgba(255,255,255,0.5); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; font-size: 13px; }
+    .footer-social { display: flex; gap: 16px; }
+    .footer-social a, .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+    .footer-social a:hover, .footer-links a:hover { color: var(--accent); }
+    .footer-links { display: flex; gap: 20px; }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb { background: var(--white); padding: 12px 60px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--gray); }
+    .breadcrumb a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 8px; }
+
+    /* Empty */
+    .empty-models { display: none; text-align: center; padding: 60px; grid-column: 1/-1; }
+    .empty-models.show { display: block; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) { .models-grid { grid-template-columns: repeat(2,1fr); } .about-section { grid-template-columns: 1fr; } .offers-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 768px) {
+      header { padding: 0 20px; } nav { display: none; }
+      .brand-hero-inner { flex-direction: column; align-items: flex-start; padding: 50px 20px; gap: 28px; }
+      .brand-hero::after { display: none; }
+      .filter-bar { padding: 14px 20px; top: 70px; }
+      .models-section { padding: 32px 20px 50px; }
+      .models-grid { grid-template-columns: 1fr; }
+      .about-section { padding: 50px 20px; gap: 40px; }
+      .offers-section { padding: 40px 20px; }
+      .offers-grid { grid-template-columns: 1fr; }
+      .cta-section { padding: 50px 20px; }
+      footer { padding: 30px 20px 24px; }
+      .breadcrumb { padding: 12px 20px; }
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--light); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="mainHeader">
+    <a href="../index.html" class="logo"><div class="logo-icon">🚗</div>JK<span>Car</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="mahindra.html" class="active">Brands</a>
+      <a href="../compare.html">Compare</a>
+      <a href="../emi-calculator.html">EMI Calculator</a>
+      <a href="../search.html">Search</a>
+      <a href="../login.html">Login</a>
+      <a href="../booking.html" class="nav-cta">Book a Car</a>
+    </nav>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="../index.html">Home</a><span>›</span>
+    <a href="../search.html">Brands</a><span>›</span>
+    Mahindra
+  </div>
+
+  <!-- BRAND HERO -->
+  <div class="brand-hero">
+    <div class="brand-hero-inner">
+      <div class="brand-logo-big">
+        <img src="mahindra.png" alt="Mahindra"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="brand-initials" style="display:none">M</div>
+      </div>
+      <div class="brand-hero-text">
+        <div class="brand-tag">🏆 Official Dealer</div>
+        <h1>Born <em>Tough,</em><br>Built for India</h1>
+        <p>Mahindra represents India's spirit — rugged, powerful, and unstoppable. From farm tracks to highways, every Mahindra is engineered to go further.</p>
+        <div class="hero-stats">
+          <div class="hstat"><div class="hstat-num">18<span>+</span></div><div class="hstat-label">Models Available</div></div>
+          <div class="hstat"><div class="hstat-num">5<span>★</span></div><div class="hstat-label">Safety Rating</div></div>
+          <div class="hstat"><div class="hstat-num">₹7L<span>+</span></div><div class="hstat-label">Starting Price</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" onclick="filterCars('all', this)">All Models</button>
+    <button class="filter-btn" onclick="filterCars('suv', this)">SUV</button>
+    <button class="filter-btn" onclick="filterCars('off-road', this)">Off-Road</button>
+    <button class="filter-btn" onclick="filterCars('mpv', this)">MPV / MUV</button>
+    <button class="filter-btn" onclick="filterCars('ev', this)">Electric</button>
+    <button class="filter-btn" onclick="filterCars('petrol', this)">Petrol</button>
+    <button class="filter-btn" onclick="filterCars('diesel', this)">Diesel</button>
+    <span class="filter-count"><strong id="countDisplay">7</strong> models</span>
+  </div>
+
+  <!-- MODELS GRID -->
+  <section class="models-section">
+    <div class="models-grid" id="modelsGrid">
+
+      <div class="car-card" data-cat="suv diesel">
+        <div class="car-img-wrap">
+          <img src="../models/xuv7002.jpg" alt="XUV700"
+            onerror="this.src='https://via.placeholder.com/400x200/c0392b/ffffff?text=XUV700'">
+          <div class="car-badge badge-hot">🔥 Best Seller</div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">🤍</button>
+        </div>
+        <div class="car-info">
+          <div class="car-brand-tag">Mahindra</div>
+          <div class="car-name">XUV700 AX7 L</div>
+          <div class="car-specs">
+            <span class="spec">⛽ Diesel</span>
+            <span class="spec">👥 7-Seater</span>
+            <span class="spec">⚙ 2.2L mHawk</span>
+            <span class="spec">🛣 15.5 km/l</span>
+          </div>
+          <div class="car-footer">
+            <div class="car-price">₹14.00 L<small>onwards • ex-showroom</small></div>
+            <div class="car-actions">
+              <a href="../models/xuv700.html" class="btn-details">Details</a>
+              <a href="../booking.html" class="btn-book">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="car-card" data-cat="off-road petrol diesel">
+        <div class="car-img-wrap">
+          <img src="../models/thar.jpg" alt="Thar Roxx"
+            onerror="this.src='https://via.placeholder.com/400x200/c0392b/ffffff?text=Thar+Roxx'">
+          <div class="car-badge badge-premium">⭐ Iconic</div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">🤍</button>
+        </div>
+        <div class="car-info">
+          <div class="car-brand-tag">Mahindra</div>
+          <div class="car-name">Thar Roxx 4×4</div>
+          <div class="car-specs">
+            <span class="spec">⛽ Petrol/Diesel</span>
+            <span class="spec">👥 4-Seater</span>
+            <span class="spec">🏔 4WD</span>
+            <span class="spec">🛣 15.2 km/l</span>
+          </div>
+          <div class="car-footer">
+            <div class="car-price">₹13.00 L<small>onwards • ex-showroom</small></div>
+            <div class="car-actions">
+              <a href="../models/thar.html" class="btn-details">Details</a>
+              <a href="../booking.html" class="btn-book">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="car-card" data-cat="suv diesel">
+        <div class="car-img-wrap">
+          <img src="../models/scorpio.jpg" alt="Scorpio N"
+            onerror="this.src='https://via.placeholder.com/400x200/c0392b/ffffff?text=Scorpio+N'">
+          <div class="car-badge badge-hot">🔥 Popular</div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">🤍</button>
+        </div>
+        <div class="car-info">
+          <div class="car-brand-tag">Mahindra</div>
+          <div class="car-name">Scorpio N Z8L</div>
+          <div class="car-specs">
+            <span class="spec">⛽ Diesel</span>
+            <span class="spec">👥 6-Seater</span>
+            <span class="spec">⚙ 2.2L mHawk</span>
+            <span class="spec">🛣 14.8 km/l</span>
+          </div>
+          <div class="car-footer">
+            <div class="car-price">₹23.99 L<small>onwards • ex-showroom</small></div>
+            <div class="car-actions">
+              <a href="../models/scorpio.html" class="btn-details">Details</a>
+              <a href="../booking.html" class="btn-book">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="car-card" data-cat="suv petrol">
+        <div class="car-img-wrap">
+          <img src="../models/xuv300.jpg" alt="XUV 3XO"
+            onerror="this.src='https://via.placeholder.com/400x200/c0392b/ffffff?text=XUV+3XO'">
+          <div class="car-badge badge-new">✨ New Launch</div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">🤍</button>
+        </div>
+        <div class="car-info">
+          <div class="car-brand-tag">Mahindra</div>
+          <div class="car-name">XUV 3XO AX7 L</div>
+          <div class="car-specs">
+            <span class="spec">⛽ Petrol</span>
+            <span class="spec">👥 5-Seater</span>
+            <span class="spec">⚙ 1.2L Turbo</span>
+            <span class="spec">🛣 18.0 km/l</span>
+          </div>
+          <div class="car-footer">
+            <div class="car-price">₹7.99 L<small>onwards • ex-showroom</small></div>
+            <div class="car-actions">
+              <a href="../models/xuv300.html" class="btn-details">Details</a>
+              <a href="../booking.html" class="btn-book">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="car-card" data-cat="mpv diesel">
+        <div class="car-img-wrap">
+          <img src="../models/bolero.jpg" alt="Bolero Neo"
+            onerror="this.src='https://via.placeholder.com/400x200/c0392b/ffffff?text=Bolero+Neo'">
+          <div class="car-badge badge-offer">💰 Value Pick</div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">🤍</button>
+        </div>
+        <div class="car-info">
+          <div class="car-brand-tag">Mahindra</div>
+          <div class="car-name">Bolero Neo N10</div>
+          <div class="car-specs">
+            <span class="spec">⛽ Diesel</span>
+            <span class="spec">👥 7-Seater</span>
+            <span class="spec">⚙ 1.5L mHawk</span>
+            <span class="spec">🛣 17.3 km/l</span>
+          </div>
+          <div class="car-footer">
+            <div class="car-price">₹9.50 L<small>onwards • ex-showroom</small></div>
+            <div class="car-actions">
+              <a href="../models/bolero.html" class="btn-details">Details</a>
+              <a href="../booking.html" class="btn-book">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="car-card" data-cat="ev">
+        <div class="car-img-wrap">
+          <img src="../models/be6e.jpg" alt="BE 6e"
+            onerror="this.src='https://via.placeholder.com/400x200/06b6d4/ffffff?text=BE+6e+EV'">
+          <div class="car-badge badge-ev">⚡ Electric</div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">🤍</button>
+        </div>
+        <div class="car-info">
+          <div class="car-brand-tag">Mahindra EV</div>
+          <div class="car-name">BE 6e Pack Three</div>
+          <div class="car-specs">
+            <span class="spec">⚡ Electric</span>
+            <span class="spec">👥 5-Seater</span>
+            <span class="spec">🔋 79 kWh</span>
+            <span class="spec">🛣 682 km range</span>
+          </div>
+          <div class="car-footer">
+            <div class="car-price">₹26.90 L<small>onwards • ex-showroom</small></div>
+            <div class="car-actions">
+              <a href="../models/be6e.html" class="btn-details">Details</a>
+              <a href="../booking.html" class="btn-book">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="car-card" data-cat="ev">
+        <div class="car-img-wrap">
+          <img src="../models/xuv9e.jpg" alt="XUV 9e"
+            onerror="this.src='https://via.placeholder.com/400x200/06b6d4/ffffff?text=XUV+9e+EV'">
+          <div class="car-badge badge-ev">⚡ Electric</div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">🤍</button>
+        </div>
+        <div class="car-info">
+          <div class="car-brand-tag">Mahindra EV</div>
+          <div class="car-name">XUV 9e Flagship</div>
+          <div class="car-specs">
+            <span class="spec">⚡ Electric</span>
+            <span class="spec">👥 5-Seater</span>
+            <span class="spec">🔋 79 kWh</span>
+            <span class="spec">🛣 656 km range</span>
+          </div>
+          <div class="car-footer">
+            <div class="car-price">₹30.50 L<small>onwards • ex-showroom</small></div>
+            <div class="car-actions">
+              <a href="../models/xuv9e.html" class="btn-details">Details</a>
+              <a href="../booking.html" class="btn-book">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-models" id="emptyMsg">
+        <div style="font-size:48px;margin-bottom:14px;">🚗</div>
+        <div style="font-size:20px;font-weight:700;margin-bottom:8px;">No models match this filter</div>
+        <div style="font-size:14px;color:var(--gray);">Try selecting a different category above.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT BRAND -->
+  <section class="about-section">
+    <div>
+      <div class="about-label">About the Brand</div>
+      <h2 class="about-title">India's Most Trusted SUV Maker</h2>
+      <p class="about-body">Founded in 1945, Mahindra & Mahindra has grown into a global automotive powerhouse. With a lineage rooted in utility and a future pointed firmly at electric innovation, Mahindra builds cars that don't just move people — they move India forward.</p>
+      <div class="about-highlights">
+        <div class="about-highlight">
+          <div class="ah-icon">🏭</div>
+          <div><div class="ah-title">Made in India</div><div class="ah-desc">All models manufactured at Nashik & Chakan plants with 95%+ local parts.</div></div>
+        </div>
+        <div class="about-highlight">
+          <div class="ah-icon">⚡</div>
+          <div><div class="ah-title">EV-First Future</div><div class="ah-desc">Mahindra's new BE and XEV series define the next generation of Indian electric SUVs.</div></div>
+        </div>
+        <div class="about-highlight">
+          <div class="ah-icon">🛡</div>
+          <div><div class="ah-title">5-Star Safety</div><div class="ah-desc">XUV700 & Scorpio N are amongst the safest cars tested in Global NCAP.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="about-cards">
+      <div class="about-stat-card">
+        <div class="asc-icon">🏆</div>
+        <div><div class="asc-num">78+</div><div class="asc-label">Years of manufacturing heritage</div></div>
+      </div>
+      <div class="about-stat-card">
+        <div class="asc-icon">🌍</div>
+        <div><div class="asc-num">100+</div><div class="asc-label">Countries where Mahindra is sold</div></div>
+      </div>
+      <div class="about-stat-card">
+        <div class="asc-icon">⚡</div>
+        <div><div class="asc-num">6</div><div class="asc-label">Electric models launching by 2027</div></div>
+      </div>
+      <div class="about-stat-card">
+        <div class="asc-icon">🔧</div>
+        <div><div class="asc-num">3 Yr</div><div class="asc-label">Warranty on all new models</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURRENT OFFERS -->
+  <section class="offers-section">
+    <div class="offers-header">
+      <div class="offers-label">🎁 This Month's Deals</div>
+      <h2 class="offers-title">Exclusive Mahindra Offers at JK Car</h2>
+    </div>
+    <div class="offers-grid">
+      <div class="offer-card">
+        <div class="offer-icon">💰</div>
+        <div class="offer-title">Cash Discount up to ₹1 Lakh</div>
+        <div class="offer-desc">Select Scorpio N and XUV700 variants are eligible for a cash discount of up to ₹1,00,000 this month.</div>
+        <div class="offer-tag">Valid till 31 March 2026</div>
+      </div>
+      <div class="offer-card">
+        <div class="offer-icon">🏦</div>
+        <div class="offer-title">Zero Down Payment</div>
+        <div class="offer-desc">Drive home in a Mahindra today with zero down payment on select models, subject to loan eligibility.</div>
+        <div class="offer-tag">Limited Stock</div>
+      </div>
+      <div class="offer-card">
+        <div class="offer-icon">🔧</div>
+        <div class="offer-title">Free 1st & 2nd Service</div>
+        <div class="offer-desc">Purchase any Mahindra model before month-end and get your first two services completely free.</div>
+        <div class="offer-tag">All Models</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2 class="cta-title">Ready to Drive a Mahindra?</h2>
+    <p class="cta-sub">Book a test drive today — no commitment, no pressure. Just you and the road.</p>
+    <div class="cta-btns">
+      <a href="../booking.html" class="btn-primary">📅 Book Test Drive</a>
+      <a href="https://wa.me/919361301371" target="_blank" class="btn-outline-w">💬 Chat on WhatsApp</a>
+    </div>
+  </section>
+
+  <!-- OTHER BRANDS -->
+  <div style="background:var(--white);padding:40px 60px;border-top:1px solid var(--border);">
+    <div style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:20px;">Explore Other Brands</div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;">
+      <a href="toyota.html"  style="display:flex;align-items:center;gap:10px;padding:10px 20px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;color:var(--navy);font-weight:600;font-size:14px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--border)'">🚙 Toyota</a>
+      <a href="hyundai.html" style="display:flex;align-items:center;gap:10px;padding:10px 20px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;color:var(--navy);font-weight:600;font-size:14px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--border)'">🚙 Hyundai</a>
+      <a href="suzuki.html"  style="display:flex;align-items:center;gap:10px;padding:10px 20px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;color:var(--navy);font-weight:600;font-size:14px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--border)'">🚙 Maruti Suzuki</a>
+      <a href="renault.html" style="display:flex;align-items:center;gap:10px;padding:10px 20px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;color:var(--navy);font-weight:600;font-size:14px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--border)'">🚙 Renault</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-bottom">
+      <span>© 2026 JK Car. All rights reserved.</span>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/_._jagazz_._kingzz_._/" target="_blank">📸 Instagram</a>
+        <a href="https://wa.me/919361301371" target="_blank">💬 WhatsApp</a>
+        <a href="mailto:jaganjk1018@gmail.com">✉️ Email</a>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Header scroll
+    window.addEventListener('scroll', () => {
+      document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Wishlist toggle
+    function toggleWish(btn) {
+      const liked = btn.classList.toggle('liked');
+      btn.textContent = liked ? '❤️' : '🤍';
+    }
+
+    // Filter
+    function filterCars(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.car-card');
+      let visible = 0;
+      cards.forEach(card => {
+        const cats = card.dataset.cat || '';
+        const show = cat === 'all' || cats.includes(cat);
+        card.style.display = show ? 'block' : 'none';
+        if (show) visible++;
+      });
+      document.getElementById('countDisplay').textContent = visible;
+      document.getElementById('emptyMsg').classList.toggle('show', visible === 0);
+    }
+
+    // Stagger card animations
+    document.querySelectorAll('.car-card').forEach((c, i) => {
+      c.style.animationDelay = (i * 0.07) + 's';
+    });
+  </script>
+</body>
+</html>

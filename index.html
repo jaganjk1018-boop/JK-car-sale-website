@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JK Car — Drive Your Dream</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0a1628;
+      --blue: #0d47a1;
+      --blue-mid: #1565c0;
+      --accent: #f5a623;
+      --accent2: #e53935;
+      --light: #f0f4ff;
+      --white: #ffffff;
+      --gray: #8492a6;
+      --card-bg: #ffffff;
+      --border: rgba(13,71,161,0.10);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--light);
+      color: var(--navy);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10,22,40,0.97);
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 60px;
+      height: 70px;
+      border-bottom: 1px solid rgba(245,166,35,0.15);
+      transition: box-shadow 0.3s;
+    }
+
+    header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.35); }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -1px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo span {
+      color: var(--accent);
+    }
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    nav { display: flex; align-items: center; gap: 6px; }
+
+    nav a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      padding: 7px 14px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+    }
+    nav a:hover { color: var(--white); background: rgba(255,255,255,0.08); }
+
+    .nav-cta {
+      background: var(--accent) !important;
+      color: var(--navy) !important;
+      font-weight: 700 !important;
+      padding: 8px 18px !important;
+      margin-left: 6px;
+    }
+    .nav-cta:hover { background: #e6941a !important; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 88vh;
+      min-height: 560px;
+      overflow: hidden;
+      background: var(--navy);
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+      display: flex;
+      align-items: center;
+    }
+    .hero-slide.active { opacity: 1; }
+
+    .hero-slide::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, rgba(10,22,40,0.92) 35%, rgba(10,22,40,0.45) 70%, transparent);
+      z-index: 1;
+    }
+
+    .hero-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.7);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 80px;
+      max-width: 680px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,166,35,0.15);
+      border: 1px solid rgba(245,166,35,0.4);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 22px;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 5.5vw, 68px);
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .hero-title em { color: var(--accent); font-style: italic; }
+
+    .hero-desc {
+      font-size: 17px;
+      color: rgba(255,255,255,0.70);
+      margin-bottom: 36px;
+      max-width: 520px;
+      font-weight: 300;
+      line-height: 1.75;
+    }
+
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.25s;
+      letter-spacing: 0.3px;
+    }
+    .btn-primary:hover { background: #e6941a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,166,35,0.35); }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 15px;
+      padding: 13px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      transition: all 0.25s;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.6); }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 40px;
+      left: 80px;
+      z-index: 2;
+      display: flex;
+      gap: 50px;
+    }
+    .stat-item { text-align: left; }
+    .stat-num { font-size: 28px; font-weight: 800; color: var(--white); line-height: 1; }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 400; letter-spacing: 0.5px; margin-top: 4px; }
+
+    /* Slide dots */
+    .hero-dots {
+      position: absolute;
+      bottom: 48px;
+      right: 80px;
+      z-index: 2;
+      display: flex;
+      gap: 8px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .dot.active { width: 28px; background: var(--accent); }
+
+    /* ── SECTION WRAPPER ── */
+    .section { padding: 80px 60px; }
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.5vw, 42px);
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .section-sub {
+      font-size: 16px;
+      color: var(--gray);
+      max-width: 520px;
+      font-weight: 300;
+    }
+    .section-head { margin-bottom: 50px; }
+
+    /* ── SEARCH BAR ── */
+    .search-bar-section {
+      background: var(--navy);
+      padding: 30px 60px;
+    }
+    .search-bar-inner {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 14px 20px;
+      flex-wrap: wrap;
+    }
+    .search-bar-inner select, .search-bar-inner input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      flex: 1;
+      min-width: 130px;
+      padding: 4px 8px;
+    }
+    .search-bar-inner select option { background: var(--navy); }
+    .search-bar-inner .divider { width: 1px; height: 28px; background: rgba(255,255,255,0.15); }
+    .search-bar-inner .btn-search {
+      background: var(--accent);
+      color: var(--navy);
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 11px 26px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .search-bar-inner .btn-search:hover { background: #e6941a; }
+
+    /* ── BRANDS ── */
+    .brands-section { background: var(--white); }
+
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+
+    .brand-card {
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 20px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--navy);
+      transition: all 0.3s;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .brand-card:hover {
+      border-color: var(--blue);
+      box-shadow: 0 8px 32px rgba(13,71,161,0.12);
+      transform: translateY(-4px);
+    }
+    .brand-logo-wrap {
+      width: 72px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--light);
+      border-radius: 50%;
+    }
+    .brand-logo-wrap img { width: 50px; height: 50px; object-fit: contain; }
+    .brand-name { font-weight: 700; font-size: 15px; }
+    .brand-count { font-size: 12px; color: var(--gray); font-weight: 400; }
+
+    /* ── FEATURED CARS ── */
+    .featured-section { background: var(--light); }
+
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .car-card {
+      background: var(--white);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .car-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(13,71,161,0.12); }
+
+    .car-img-wrap {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      background: var(--light);
+    }
+    .car-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .car-card:hover .car-img-wrap img { transform: scale(1.06); }
+
+    .car-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: var(--accent);
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+    .car-badge.new { background: #22c55e; color: white; }
+    .car-badge.hot { background: var(--accent2); color: white; }
+
+    .car-info { padding: 22px; }
+    .car-brand-tag { font-size: 11px; color: var(--blue); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+    .car-name { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
+    .car-specs {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .spec { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--gray); }
+    .spec svg { flex-shrink: 0; }
+
+    .car-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .car-price { font-size: 20px; font-weight: 800; color: var(--blue); }
+    .car-price small { font-size: 12px; font-weight: 400; color: var(--gray); display: block; }
+    .btn-book {
+      background: var(--blue);
+      color: white;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-book:hover { background: var(--blue-mid); transform: translateY(-1px); }
+
+    /* ── WHY US ── */
+    .why-section { background: var(--navy); }
+    .why-section .section-label { color: var(--accent); }
+    .why-section .section-title { color: var(--white); }
+    .why-section .section-sub { color: rgba(255,255,255,0.5); }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .why-card {
+      padding: 32px 26px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.04);
+      transition: all 0.3s;
+    }
+    .why-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(245,166,35,0.25); transform: translateY(-4px); }
+    .why-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: rgba(245,166,35,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 18px;
+    }
+    .why-title { font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .why-desc { font-size: 14px; color: rgba(255,255,255,0.50); line-height: 1.7; font-weight: 300; }
+
+    /* ── EMI CALCULATOR ── */
+    .emi-section { background: var(--white); }
+
+    .emi-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .emi-form { display: flex; flex-direction: column; gap: 22px; }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .form-group input[type="range"] {
+      width: 100%;
+      accent-color: var(--blue);
+      height: 4px;
+      cursor: pointer;
+    }
+    .range-values {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--gray);
+      margin-top: 6px;
+    }
+    .range-value-display {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .emi-result {
+      background: var(--navy);
+      border-radius: 20px;
+      padding: 40px;
+      color: white;
+    }
+    .emi-result-label { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 500; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .emi-result-amount { font-size: 48px; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+    .emi-result-sub { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 30px; }
+    .emi-breakdown { display: flex; flex-direction: column; gap: 14px; margin-bottom: 30px; }
+    .emi-row { display: flex; justify-content: space-between; font-size: 14px; color: rgba(255,255,255,0.7); padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .emi-row span:last-child { font-weight: 600; color: white; }
+    .btn-apply {
+      display: block;
+      text-align: center;
+      background: var(--accent);
+      color: var(--navy);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+    }
+    .btn-apply:hover { background: #e6941a; transform: translateY(-2px); }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section { background: var(--light); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testimonial-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 30px;
+      border: 1.5px solid var(--border);
+      transition: all 0.3s;
+    }
+    .testimonial-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(13,71,161,0.08); }
+    .stars { color: var(--accent); font-size: 16px; margin-bottom: 14px; letter-spacing: 2px; }
+    .testimonial-text { font-size: 15px; color: #444; line-height: 1.75; margin-bottom: 22px; font-style: italic; font-weight: 300; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .author-name { font-weight: 700; font-size: 15px; }
+    .author-city { font-size: 12px; color: var(--gray); }
+
+    /* ── CTA BANNER ── */
+    .cta-section {
+      background: linear-gradient(120deg, var(--blue) 0%, #1a237e 100%);
+      padding: 70px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      left: 80px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(245,166,35,0.08);
+    }
+    .cta-title { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 48px); color: white; margin-bottom: 14px; position: relative; z-index: 1; }
+    .cta-sub { font-size: 17px; color: rgba(255,255,255,0.65); margin-bottom: 36px; font-weight: 300; position: relative; z-index: 1; }
+    .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      padding: 60px 60px 30px;
+      color: rgba(255,255,255,0.6);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1.4fr;
+      gap: 50px;
+      margin-bottom: 50px;
+    }
+    .footer-brand .logo { margin-bottom: 16px; font-size: 22px; }
+    .footer-desc { font-size: 14px; line-height: 1.8; font-weight: 300; margin-bottom: 24px; }
+    .social-links { display: flex; gap: 12px; }
+    .social-link {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      transition: all 0.2s;
+    }
+    .social-link:hover { background: var(--accent); color: var(--navy); border-color: var(--accent); }
+
+    .footer-col h4 { font-size: 13px; font-weight: 700; color: white; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 18px; }
+    .footer-links { display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 14px; font-weight: 300; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent); }
+
+    .contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 14px; }
+    .contact-item span:first-child { font-size: 16px; margin-top: 2px; }
+    .contact-item a { color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; font-weight: 300; }
+    .contact-item a:hover { color: var(--accent); }
+
+    .footer-bottom {
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .footer-bottom-links { display: flex; gap: 20px; }
+    .footer-bottom-links a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+    .footer-bottom-links a:hover { color: var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .cars-grid { grid-template-columns: repeat(2, 1fr); }
+      .why-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .brands-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      header { padding: 0 20px; }
+      .section { padding: 60px 20px; }
+      .hero-content { padding: 0 28px; }
+      .hero-stats { left: 28px; gap: 28px; }
+      .hero-dots { right: 28px; }
+      .search-bar-section { padding: 24px 20px; }
+      .cars-grid, .testimonials-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .brands-grid { grid-template-columns: repeat(2, 1fr); }
+      .emi-container { grid-template-columns: 1fr; }
+      footer { padding: 48px 20px 24px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      nav { display: none; }
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-content > * {
+      animation: fadeUp 0.7s ease both;
+    }
+    .hero-badge { animation-delay: 0.1s; }
+    .hero-title { animation-delay: 0.25s; }
+    .hero-desc { animation-delay: 0.4s; }
+    .hero-btns { animation-delay: 0.55s; }
+
+    /* Floating label placeholder */
+    select::placeholder, input::placeholder { color: rgba(255,255,255,0.35); }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--light); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header id="mainHeader">
+    <div class="logo">
+      <div class="logo-icon">🚗</div>
+      JK<span>Car</span>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="brands/mahindra.html">Brands</a>
+      <a href="compare.html">Compare</a>
+      <a href="emi-calculator.html">EMI Calculator</a>
+      <a href="search.html">Inventory</a>
+      <a href="login.html">Login</a>
+      <a href="booking.html" class="nav-cta">Book a Car</a>
+    </nav>
+  </header>
+
+  <!-- HERO SLIDER -->
+  <section class="hero">
+    <div class="hero-slide active">
+      <img src="banner1.png" alt="Drive your dream car">
+      <div class="hero-content">
+        <div class="hero-badge">✦ Chennai's #1 Car Showroom</div>
+        <h1 class="hero-title">Drive the Car You've Always <em>Dreamed Of</em></h1>
+        <p class="hero-desc">Explore over 500+ cars from India's top brands. Transparent pricing, easy EMI, and a showroom experience like no other.</p>
+        <div class="hero-btns">
+          <a href="search.html" class="btn-primary">Browse All Cars →</a>
+          <a href="emi-calculator.html" class="btn-outline">Calculate EMI</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-slide">
+      <img src="banner2.png" alt="Premium car deals">
+      <div class="hero-content">
+        <div class="hero-badge">🔥 Limited Time Offers</div>
+        <h1 class="hero-title">Exclusive Deals on <em>Top Models</em> This Season</h1>
+        <p class="hero-desc">Special discounts, zero down-payment options, and instant approval loans — only at JK Car.</p>
+        <div class="hero-btns">
+          <a href="booking.html" class="btn-primary">Book Test Drive →</a>
+          <a href="compare.html" class="btn-outline">Compare Models</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">500<span>+</span></div>
+        <div class="stat-label">Cars in Stock</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">12<span>K+</span></div>
+        <div class="stat-label">Happy Customers</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">5<span>★</span></div>
+        <div class="stat-label">Google Rating</div>
+      </div>
+    </div>
+
+    <div class="hero-dots">
+      <div class="dot active" onclick="goToSlide(0)"></div>
+      <div class="dot" onclick="goToSlide(1)"></div>
+    </div>
+  </section>
+
+  <!-- QUICK SEARCH -->
+  <div class="search-bar-section">
+    <div class="search-bar-inner">
+      <select>
+        <option value="">🏷 Brand</option>
+        <option>Mahindra</option>
+        <option>Toyota</option>
+        <option>Hyundai</option>
+        <option>Maruti Suzuki</option>
+        <option>Renault</option>
+      </select>
+      <div class="divider"></div>
+      <select>
+        <option value="">⚙ Fuel Type</option>
+        <option>Petrol</option>
+        <option>Diesel</option>
+        <option>Electric</option>
+        <option>Hybrid</option>
+      </select>
+      <div class="divider"></div>
+      <select>
+        <option value="">💰 Budget</option>
+        <option>Under ₹5 Lakh</option>
+        <option>₹5–10 Lakh</option>
+        <option>₹10–20 Lakh</option>
+        <option>Above ₹20 Lakh</option>
+      </select>
+      <div class="divider"></div>
+      <select>
+        <option value="">🚘 Body Type</option>
+        <option>SUV</option>
+        <option>Sedan</option>
+        <option>Hatchback</option>
+        <option>MUV</option>
+      </select>
+      <button class="btn-search" onclick="window.location.href='search.html'">🔍 Find My Car</button>
+    </div>
+  </div>
+
+  <!-- BRANDS -->
+  <section class="section brands-section">
+    <div class="section-head">
+      <div class="section-label">Our Partners</div>
+      <h2 class="section-title">Top Brands, All Under One Roof</h2>
+      <p class="section-sub">Authorised dealer for India's most trusted car manufacturers.</p>
+    </div>
+    <div class="brands-grid">
+      <a href="brands/mahindra.html" class="brand-card">
+        <div class="brand-logo-wrap"><img src="brands/mahindra.png" alt="Mahindra"></div>
+        <div>
+          <div class="brand-name">Mahindra</div>
+          <div class="brand-count">18 models available</div>
+        </div>
+      </a>
+      <a href="brands/toyota.html" class="brand-card">
+        <div class="brand-logo-wrap"><img src="brands/toyato.jpg" alt="Toyota"></div>
+        <div>
+          <div class="brand-name">Toyota</div>
+          <div class="brand-count">14 models available</div>
+        </div>
+      </a>
+      <a href="brands/hyundai.html" class="brand-card">
+        <div class="brand-logo-wrap"><img src="brands/hyundai.jpg" alt="Hyundai"></div>
+        <div>
+          <div class="brand-name">Hyundai</div>
+          <div class="brand-count">16 models available</div>
+        </div>
+      </a>
+      <a href="brands/suzuki.html" class="brand-card">
+        <div class="brand-logo-wrap"><img src="brands/suzuki.png" alt="Suzuki"></div>
+        <div>
+          <div class="brand-name">Maruti Suzuki</div>
+          <div class="brand-count">22 models available</div>
+        </div>
+      </a>
+      <a href="brands/renault.html" class="brand-card">
+        <div class="brand-logo-wrap"><img src="brands/renault.png" alt="Renault"></div>
+        <div>
+          <div class="brand-name">Renault</div>
+          <div class="brand-count">8 models available</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FEATURED CARS -->
+  <section class="section featured-section">
+    <div class="section-head">
+      <div class="section-label">Hot Picks</div>
+      <h2 class="section-title">Most Popular Right Now</h2>
+      <p class="section-sub">Our best-selling models — loved by thousands of customers across Chennai.</p>
+    </div>
+    <div class="cars-grid">
+
+      <div class="car-card">
+        <div class="car-img-wrap">
+          <img src="brands/mahindra.png" alt="Mahindra Scorpio N" style="object-fit:contain;padding:24px;">
+          <div class="car-badge hot">🔥 Best Seller</div>
+        </div>
+        <div class="car-info">
+          <div class="car-brand-tag">Mahindra</div>
+          <div class="car-name">Scorpio N Z8L</div>
+          <div class="car-specs">
+            <span class="spec">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              Diesel
+            </span>
+            <span class="spec">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+              6-Seater
+            </span>
+            <span class="spec">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              2.2L mHawk
+            </span>
+          </div>
+          <div class="car-price-row">
+            <div class="car-price">₹23.99 L<small>onwards • ex-showroom</small></div>
+            <a href="booking.html" class="btn-book">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-img-wrap">
+          <img src="brands/hyundai.jpg" alt="Hyundai Creta" style="object-fit:contain;padding:24px;">
+          <div class="car-badge new">✨ New Launch</div>
+        </div>
+        <div class="car-info">
+          <div class="car-brand-tag">Hyundai</div>
+          <div class="car-name">Creta N Line</div>
+          <div class="car-specs">
+            <span class="spec">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              Petrol / Turbo
+            </span>
+            <span class="spec">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+              5-Seater
+            </span>
+            <span class="spec">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              1.5L iVT
+            </span>
+          </div>
+          <div class="car-price-row">
+            <div class="car-price">₹17.40 L<small>onwards • ex-showroom</small></div>
+            <a href="booking.html" class="btn-book">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-img-wrap">
+          <img src="brands/toyato.jpg" alt="Toyota Fortuner" style="object-fit:contain;padding:24px;">
+          <div class="car-badge" style="background:#7c3aed;color:white;">⭐ Premium</div>
+        </div>
+        <div class="car-info">
+          <div class="car-brand-tag">Toyota</div>
+          <div class="car-name">Fortuner Legender</div>
+          <div class="car-specs">
+            <span class="spec">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              Diesel
+            </span>
+            <span class="spec">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+              7-Seater
+            </span>
+            <span class="spec">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              2.8L GD-6
+            </span>
+          </div>
+          <div class="car-price-row">
+            <div class="car-price">₹46.47 L<small>onwards • ex-showroom</small></div>
+            <a href="booking.html" class="btn-book">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="search.html" class="btn-primary" style="display:inline-flex;">View All Cars →</a>
+    </div>
+  </section>
+
+  <!-- WHY JK CAR -->
+  <section class="section why-section">
+    <div class="section-head">
+      <div class="section-label">Why Choose Us</div>
+      <h2 class="section-title">The JK Car Difference</h2>
+      <p class="section-sub">We don't just sell cars — we build relationships that last a lifetime.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🏆</div>
+        <div class="why-title">Trusted Since 2010</div>
+        <div class="why-desc">Over 12,000 cars delivered across Tamil Nadu. Our legacy of trust speaks for itself.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💳</div>
+        <div class="why-title">Easy Financing</div>
+        <div class="why-desc">EMI options starting ₹4,999/month. 20+ bank tie-ups for instant loan approval in 30 minutes.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔧</div>
+        <div class="why-title">After-Sales Service</div>
+        <div class="why-desc">Authorised service centre with genuine parts. Free first service and 3-year warranty on all cars.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📋</div>
+        <div class="why-title">Zero Hidden Costs</div>
+        <div class="why-desc">Transparent pricing with no surprise charges. What you see is exactly what you pay — period.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMI CALCULATOR -->
+  <section class="section emi-section">
+    <div class="section-head">
+      <div class="section-label">Finance Tool</div>
+      <h2 class="section-title">Calculate Your Monthly EMI</h2>
+      <p class="section-sub">Adjust loan amount, tenure & interest to find a plan that fits your budget.</p>
+    </div>
+    <div class="emi-container">
+      <div class="emi-form">
+        <div class="form-group">
+          <label>Loan Amount</label>
+          <div class="range-value-display" id="loanDisplay">₹10,00,000</div>
+          <input type="range" id="loanAmount" min="100000" max="5000000" step="50000" value="1000000">
+          <div class="range-values"><span>₹1L</span><span>₹50L</span></div>
+        </div>
+        <div class="form-group">
+          <label>Interest Rate (% per annum)</label>
+          <div class="range-value-display" id="rateDisplay">8.5%</div>
+          <input type="range" id="interestRate" min="5" max="18" step="0.5" value="8.5">
+          <div class="range-values"><span>5%</span><span>18%</span></div>
+        </div>
+        <div class="form-group">
+          <label>Loan Tenure</label>
+          <div class="range-value-display" id="tenureDisplay">5 Years</div>
+          <input type="range" id="tenure" min="1" max="7" step="1" value="5">
+          <div class="range-values"><span>1 Year</span><span>7 Years</span></div>
+        </div>
+      </div>
+      <div class="emi-result">
+        <div class="emi-result-label">Monthly EMI</div>
+        <div class="emi-result-amount" id="emiAmount">₹20,516</div>
+        <div class="emi-result-sub">Estimated monthly payment</div>
+        <div class="emi-breakdown">
+          <div class="emi-row"><span>Principal</span><span id="principalAmt">₹10,00,000</span></div>
+          <div class="emi-row"><span>Total Interest</span><span id="totalInterest">₹2,30,960</span></div>
+          <div class="emi-row"><span>Total Payment</span><span id="totalPayment">₹12,30,960</span></div>
+        </div>
+        <a href="booking.html" class="btn-apply">Apply for Car Loan →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section testimonials-section">
+    <div class="section-head">
+      <div class="section-label">Customer Stories</div>
+      <h2 class="section-title">What Our Customers Say</h2>
+      <p class="section-sub">Real reviews from real customers. No scripts, no edits.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Best car buying experience I've ever had. The staff was incredibly helpful and honest about pricing. Got my Creta at a great deal with zero hassle!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">R</div>
+          <div><div class="author-name">Rajesh Kumar</div><div class="author-city">Anna Nagar, Chennai</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"EMI calculator on the website helped me plan my budget perfectly. Loan was approved within an hour on the day of booking. Very professional team!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#16a34a,#0891b2)">P</div>
+          <div><div class="author-name">Priya Lakshmi</div><div class="author-city">Velachery, Chennai</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Bought a Mahindra Scorpio N. The after-sales service is exceptional. They followed up even after delivery to ensure everything was perfect. Highly recommended!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#ea580c,#d97706)">S</div>
+          <div><div class="author-name">Suresh Babu</div><div class="author-city">OMR, Chennai</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-section">
+    <h2 class="cta-title">Your Dream Car is Waiting</h2>
+    <p class="cta-sub">Book a test drive today. No pressure, no commitment — just you and the perfect car.</p>
+    <div class="cta-btns">
+      <a href="booking.html" class="btn-primary">📅 Book Test Drive</a>
+      <a href="#" onclick="window.open('https://wa.me/919361301371','_blank')" class="btn-outline">💬 Chat on WhatsApp</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">🚗 JK<span>Car</span></div>
+        <p class="footer-desc">Chennai's most trusted multi-brand car dealership. Serving customers since 2010 with transparent pricing, easy finance, and world-class after-sales service.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/_._jagazz_._kingzz_._/" target="_blank" class="social-link">📸</a>
+          <a href="https://wa.me/919361301371" target="_blank" class="social-link">💬</a>
+          <a href="#" class="social-link">👍</a>
+          <a href="mailto:jaganjk1018@gmail.com" class="social-link">✉️</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="brands/mahindra.html">All Brands</a>
+          <a href="search.html">Browse Cars</a>
+          <a href="compare.html">Compare Models</a>
+          <a href="emi-calculator.html">EMI Calculator</a>
+          <a href="booking.html">Book Online</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Brands</h4>
+        <div class="footer-links">
+          <a href="brands/mahindra.html">Mahindra</a>
+          <a href="brands/toyota.html">Toyota</a>
+          <a href="brands/hyundai.html">Hyundai</a>
+          <a href="brands/suzuki.html">Maruti Suzuki</a>
+          <a href="brands/renault.html">Renault</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="contact-item">
+          <span>📍</span>
+          <span>No. 12, GST Road, Chrompet, Chennai – 600044</span>
+        </div>
+        <div class="contact-item">
+          <span>📞</span>
+          <a href="tel:+919361301371">+91 93613 01371</a>
+        </div>
+        <div class="contact-item">
+          <span>✉️</span>
+          <a href="mailto:jaganjk1018@gmail.com">jaganjk1018@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <span>🕐</span>
+          <span>Mon–Sat: 9:00 AM – 7:00 PM</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 JK Car. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky header shadow
+    const header = document.getElementById('mainHeader');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Hero slider
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.dot');
+
+    function goToSlide(n) {
+      slides[currentSlide].classList.remove('active');
+      dots[currentSlide].classList.remove('active');
+      currentSlide = n;
+      slides[currentSlide].classList.add('active');
+      dots[currentSlide].classList.add('active');
+    }
+
+    function nextSlide() {
+      goToSlide((currentSlide + 1) % slides.length);
+    }
+
+    let autoSlide = setInterval(nextSlide, 5000);
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        clearInterval(autoSlide);
+        goToSlide(i);
+        autoSlide = setInterval(nextSlide, 5000);
+      });
+    });
+
+    // EMI Calculator
+    const loanInput = document.getElementById('loanAmount');
+    const rateInput = document.getElementById('interestRate');
+    const tenureInput = document.getElementById('tenure');
+
+    function formatINR(n) {
+      return '₹' + n.toLocaleString('en-IN');
+    }
+
+    function calcEMI() {
+      const P = parseInt(loanInput.value);
+      const r = parseFloat(rateInput.value) / 12 / 100;
+      const n = parseInt(tenureInput.value) * 12;
+      const emi = Math.round(P * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1));
+      const total = emi * n;
+      const interest = total - P;
+
+      document.getElementById('loanDisplay').textContent = formatINR(P);
+      document.getElementById('rateDisplay').textContent = rateInput.value + '%';
+      document.getElementById('tenureDisplay').textContent = tenureInput.value + ' Year' + (tenureInput.value > 1 ? 's' : '');
+      document.getElementById('emiAmount').textContent = formatINR(emi);
+      document.getElementById('principalAmt').textContent = formatINR(P);
+      document.getElementById('totalInterest').textContent = formatINR(interest);
+      document.getElementById('totalPayment').textContent = formatINR(total);
+    }
+
+    loanInput.addEventListener('input', calcEMI);
+    rateInput.addEventListener('input', calcEMI);
+    tenureInput.addEventListener('input', calcEMI);
+    calcEMI();
+  </script>
+
+</body>
+</html>

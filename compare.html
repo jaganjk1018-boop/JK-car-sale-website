@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare Cars — JK Car</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0a1628;
+      --blue: #0d47a1;
+      --blue-mid: #1565c0;
+      --accent: #f5a623;
+      --green: #22c55e;
+      --red: #ef4444;
+      --light: #f0f4ff;
+      --white: #ffffff;
+      --gray: #8492a6;
+      --border: rgba(13,71,161,0.10);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--light);
+      color: var(--navy);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(10,22,40,0.97);
+      backdrop-filter: blur(12px);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 60px; height: 70px;
+      border-bottom: 1px solid rgba(245,166,35,0.15);
+      transition: box-shadow 0.3s;
+    }
+    header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.35); }
+    .logo {
+      font-size: 24px; font-weight: 900; color: var(--white);
+      letter-spacing: -1px; text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .logo span { color: var(--accent); }
+    .logo-icon {
+      width: 34px; height: 34px; background: var(--accent);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; font-size: 16px;
+    }
+    nav { display: flex; align-items: center; gap: 4px; }
+    nav a {
+      color: rgba(255,255,255,0.70); text-decoration: none;
+      font-weight: 500; font-size: 14px; padding: 7px 14px;
+      border-radius: 6px; transition: all 0.2s;
+    }
+    nav a:hover, nav a.active { color: var(--white); background: rgba(255,255,255,0.08); }
+    .nav-cta { background: var(--accent) !important; color: var(--navy) !important; font-weight: 700 !important; margin-left: 6px; }
+    .nav-cta:hover { background: #e6941a !important; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      background: var(--navy); padding: 52px 60px 44px;
+      position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 320px; height: 320px; border-radius: 50%;
+      background: rgba(13,71,161,0.18);
+    }
+    .page-hero::after {
+      content: ''; position: absolute; bottom: -50px; left: 30%;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: rgba(245,166,35,0.07);
+    }
+    .page-hero-inner { position: relative; z-index: 1; }
+    .hero-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      color: var(--white); line-height: 1.15; margin-bottom: 10px;
+    }
+    .page-hero p { font-size: 16px; color: rgba(255,255,255,0.55); font-weight: 300; max-width: 500px; }
+
+    /* ── CAR SELECTOR ── */
+    .selector-section {
+      background: var(--white);
+      padding: 40px 60px;
+      border-bottom: 1px solid var(--border);
+    }
+    .selector-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--gray); margin-bottom: 20px;
+    }
+    .selector-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .slot {
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      min-height: 180px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 12px;
+      transition: all 0.3s;
+      position: relative;
+      background: var(--light);
+    }
+    .slot.filled {
+      border-style: solid;
+      border-color: rgba(13,71,161,0.25);
+      background: var(--white);
+    }
+    .slot-number {
+      position: absolute; top: 12px; left: 14px;
+      font-size: 11px; font-weight: 700; color: var(--gray);
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .slot-remove {
+      position: absolute; top: 10px; right: 12px;
+      width: 26px; height: 26px;
+      background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 50%; cursor: pointer;
+      display: none; align-items: center; justify-content: center;
+      font-size: 13px; color: #ef4444; transition: all 0.2s;
+    }
+    .slot.filled .slot-remove { display: flex; }
+    .slot-remove:hover { background: #ef4444; color: white; }
+
+    .slot-empty-icon { font-size: 32px; opacity: 0.35; }
+    .slot-empty-text { font-size: 14px; color: var(--gray); font-weight: 400; text-align: center; }
+
+    .slot-car-img {
+      width: 90px; height: 60px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: var(--light);
+    }
+    .slot-car-name { font-size: 15px; font-weight: 700; text-align: center; }
+    .slot-car-brand { font-size: 11px; color: var(--blue); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+    .slot-car-price { font-size: 16px; font-weight: 800; color: var(--blue); }
+
+    .add-car-dropdown {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-family: 'Outfit', sans-serif; font-size: 14px;
+      color: var(--navy); background: var(--white);
+      outline: none; cursor: pointer; transition: border-color 0.2s;
+      margin-top: 4px;
+    }
+    .add-car-dropdown:focus { border-color: var(--blue); }
+
+    .btn-add-car {
+      background: var(--blue); color: white;
+      border: none; border-radius: 10px;
+      font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 14px;
+      padding: 10px 20px; cursor: pointer; transition: all 0.2s;
+      width: 100%;
+    }
+    .btn-add-car:hover { background: var(--blue-mid); }
+
+    /* ── COMPARE TABLE ── */
+    .compare-section { padding: 40px 60px 60px; }
+
+    .compare-actions {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 28px; flex-wrap: wrap; gap: 14px;
+    }
+    .compare-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px; color: var(--navy);
+    }
+    .btn-clear-all {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      border-radius: 10px; font-family: 'Outfit', sans-serif;
+      font-weight: 600; font-size: 13px; color: var(--gray);
+      padding: 10px 20px; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-clear-all:hover { border-color: #ef4444; color: #ef4444; }
+
+    /* Empty compare state */
+    .empty-compare {
+      text-align: center; padding: 80px 20px;
+      background: var(--white); border-radius: 20px;
+      border: 1.5px dashed var(--border);
+    }
+    .empty-compare-emoji { font-size: 56px; margin-bottom: 16px; }
+    .empty-compare h3 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .empty-compare p { font-size: 15px; color: var(--gray); font-weight: 300; }
+
+    /* Table */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 20px;
+      box-shadow: 0 4px 30px rgba(13,71,161,0.08);
+    }
+
+    #compareTable {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    #compareTable .row-header {
+      background: var(--navy);
+      color: rgba(255,255,255,0.75);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 18px 24px;
+    }
+
+    /* Car header row */
+    #compareTable .car-header-row td {
+      padding: 28px 24px 20px;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+    }
+    #compareTable .car-header-row td:first-child {
+      background: var(--navy);
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      width: 180px;
+      vertical-align: middle;
+    }
+
+    .th-car-img {
+      width: 80px; height: 56px;
+      object-fit: contain;
+      border-radius: 8px; background: var(--light);
+      margin-bottom: 10px;
+    }
+    .th-car-brand {
+      font-size: 10px; font-weight: 700; color: var(--blue);
+      letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 4px;
+    }
+    .th-car-name { font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+
+    /* Data rows */
+    #compareTable tr.data-row { transition: background 0.15s; }
+    #compareTable tr.data-row:hover { background: rgba(13,71,161,0.03); }
+
+    #compareTable tr.data-row td {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    #compareTable tr.data-row td:first-child {
+      background: var(--navy);
+      color: rgba(255,255,255,0.6);
+      font-size: 13px; font-weight: 500;
+      text-align: left;
+      width: 180px;
+    }
+
+    /* Section header rows */
+    #compareTable tr.section-row td {
+      background: var(--light);
+      padding: 10px 24px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--blue);
+      border-bottom: 1px solid var(--border);
+    }
+    #compareTable tr.section-row td:first-child { background: rgba(13,71,161,0.06); }
+
+    /* Winner highlight */
+    .winner { color: var(--green) !important; font-weight: 700 !important; }
+    .winner::after { content: ' ✓'; font-size: 11px; }
+
+    /* Rating bar */
+    .rating-bar-wrap { display: flex; align-items: center; gap: 8px; justify-content: center; }
+    .rating-bar {
+      height: 6px; border-radius: 3px;
+      background: var(--light); flex: 1; max-width: 80px;
+      overflow: hidden;
+    }
+    .rating-fill { height: 100%; border-radius: 3px; background: var(--blue); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy); padding: 36px 60px 28px;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 14px; font-size: 13px;
+    }
+    .footer-social { display: flex; gap: 16px; }
+    .footer-social a, .footer-links a {
+      color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-social a:hover, .footer-links a:hover { color: var(--accent); }
+    .footer-links { display: flex; gap: 20px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      header { padding: 0 20px; }
+      .page-hero { padding: 40px 20px 36px; }
+      .selector-section { padding: 30px 20px; }
+      .compare-section { padding: 30px 20px 50px; }
+      footer { padding: 30px 20px 24px; }
+      .selector-grid { grid-template-columns: 1fr; }
+      nav { display: none; }
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--light); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="mainHeader">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">🚗</div>
+      JK<span>Car</span>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="brands/mahindra.html">Brands</a>
+      <a href="compare.html" class="active">Compare</a>
+      <a href="emi-calculator.html">EMI Calculator</a>
+      <a href="search.html">Search</a>
+      <a href="login.html">Login</a>
+      <a href="booking.html" class="nav-cta">Book a Car</a>
+    </nav>
+  </header>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="hero-label">⚖ Side-by-Side Comparison</div>
+      <h1>Compare Cars Instantly</h1>
+      <p>Pick up to 3 cars and compare specs, price, mileage, and features side by side.</p>
+    </div>
+  </div>
+
+  <!-- CAR SELECTOR -->
+  <div class="selector-section">
+    <div class="selector-title">Select Cars to Compare (up to 3)</div>
+    <div class="selector-grid" id="selectorGrid">
+      <!-- Slots injected by JS -->
+    </div>
+  </div>
+
+  <!-- COMPARE TABLE -->
+  <div class="compare-section">
+    <div class="compare-actions">
+      <div class="compare-title">Detailed Comparison</div>
+      <button class="btn-clear-all" onclick="clearAll()">✕ Clear All</button>
+    </div>
+    <div id="compareOutput"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-bottom">
+      <span>© 2026 JK Car. All rights reserved.</span>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/_._jagazz_._kingzz_._/" target="_blank">📸 Instagram</a>
+        <a href="https://wa.me/919361301371" target="_blank">💬 WhatsApp</a>
+        <a href="mailto:jaganjk1018@gmail.com">✉️ Email</a>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── CAR DATABASE
+    const carDB = [
+      {
+        id: 'xuv700',
+        brand: 'Mahindra', name: 'XUV700 AX7 L', img: 'models/xuv7002.jpg',
+        price: 1400000, priceLabel: '₹14.00 L',
+        fuel: 'Diesel', engine: '2.2L mHawk', power: '185 bhp',
+        torque: '420 Nm', transmission: 'Automatic',
+        mileage: 15.5, seats: 7, bootSpace: 600,
+        safetyRating: 5, infotainment: '10.25" Touchscreen',
+        sunroof: 'Yes', airbags: 6, abs: 'Yes', esp: 'Yes',
+        warranty: '3 Years / 1 Lakh km', bodyType: 'SUV',
+      },
+      {
+        id: 'thar',
+        brand: 'Mahindra', name: 'Thar Roxx 4×4', img: 'models/thar.jpg',
+        price: 1300000, priceLabel: '₹13.00 L',
+        fuel: 'Petrol / Diesel', engine: '2.0L mStallion', power: '150 bhp',
+        torque: '300 Nm', transmission: 'Manual / Auto',
+        mileage: 15.2, seats: 4, bootSpace: 200,
+        safetyRating: 4, infotainment: '9" Touchscreen',
+        sunroof: 'No', airbags: 2, abs: 'Yes', esp: 'Yes',
+        warranty: '3 Years / 1 Lakh km', bodyType: 'Off-road SUV',
+      },
+      {
+        id: 'scorpio',
+        brand: 'Mahindra', name: 'Scorpio N Z8L', img: 'models/scorpio.jpg',
+        price: 2399000, priceLabel: '₹23.99 L',
+        fuel: 'Diesel', engine: '2.2L mHawk', power: '172 bhp',
+        torque: '370 Nm', transmission: 'Automatic',
+        mileage: 14.8, seats: 6, bootSpace: 750,
+        safetyRating: 5, infotainment: '8" Touchscreen',
+        sunroof: 'Yes', airbags: 6, abs: 'Yes', esp: 'Yes',
+        warranty: '3 Years / 1 Lakh km', bodyType: 'SUV',
+      },
+      {
+        id: 'creta',
+        brand: 'Hyundai', name: 'Creta N Line', img: 'models/creta.jpg',
+        price: 1740000, priceLabel: '₹17.40 L',
+        fuel: 'Petrol', engine: '1.5L Turbo GDi', power: '160 bhp',
+        torque: '253 Nm', transmission: 'DCT',
+        mileage: 16.8, seats: 5, bootSpace: 433,
+        safetyRating: 5, infotainment: '10.25" Touchscreen',
+        sunroof: 'Yes', airbags: 6, abs: 'Yes', esp: 'Yes',
+        warranty: '3 Years / Unlimited km', bodyType: 'SUV',
+      },
+      {
+        id: 'innova',
+        brand: 'Toyota', name: 'Innova Crysta GX', img: 'models/Innova.jpg',
+        price: 1700000, priceLabel: '₹17.00 L',
+        fuel: 'Diesel', engine: '2.4L GD-6', power: '150 bhp',
+        torque: '360 Nm', transmission: 'Manual',
+        mileage: 14.6, seats: 8, bootSpace: 300,
+        safetyRating: 4, infotainment: '9" Touchscreen',
+        sunroof: 'No', airbags: 4, abs: 'Yes', esp: 'No',
+        warranty: '3 Years / 1 Lakh km', bodyType: 'MPV',
+      },
+      {
+        id: 'swift',
+        brand: 'Maruti Suzuki', name: 'Swift ZXi+', img: 'models/swift.jpg',
+        price: 600000, priceLabel: '₹6.00 L',
+        fuel: 'Petrol', engine: '1.2L Z Series', power: '82 bhp',
+        torque: '113 Nm', transmission: 'AMT',
+        mileage: 23.2, seats: 5, bootSpace: 268,
+        safetyRating: 3, infotainment: '9" SmartPlay',
+        sunroof: 'No', airbags: 2, abs: 'Yes', esp: 'No',
+        warranty: '2 Years / 40,000 km', bodyType: 'Hatchback',
+      },
+      {
+        id: 'baleno',
+        brand: 'Maruti Suzuki', name: 'Baleno Alpha', img: 'models/baleno.jpg',
+        price: 800000, priceLabel: '₹8.00 L',
+        fuel: 'Petrol', engine: '1.2L DualJet', power: '90 bhp',
+        torque: '113 Nm', transmission: 'AMT',
+        mileage: 22.3, seats: 5, bootSpace: 318,
+        safetyRating: 3, infotainment: '9" SmartPlay Pro+',
+        sunroof: 'No', airbags: 6, abs: 'Yes', esp: 'No',
+        warranty: '2 Years / 40,000 km', bodyType: 'Hatchback',
+      },
+      {
+        id: 'kiger',
+        brand: 'Renault', name: 'Kiger RXZ Turbo', img: 'models/kiger.jpg',
+        price: 700000, priceLabel: '₹7.00 L',
+        fuel: 'Petrol', engine: '1.0L Turbo', power: '100 bhp',
+        torque: '160 Nm', transmission: 'CVT',
+        mileage: 18.2, seats: 5, bootSpace: 405,
+        safetyRating: 4, infotainment: '8" MediaNav',
+        sunroof: 'Yes', airbags: 4, abs: 'Yes', esp: 'Yes',
+        warranty: '2 Years / Unlimited km', bodyType: 'Compact SUV',
+      },
+    ];
+
+    let selectedCars = [null, null, null]; // 3 slots
+
+    // ── Header scroll
+    const header = document.getElementById('mainHeader');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    function renderSlots() {
+      const grid = document.getElementById('selectorGrid');
+      grid.innerHTML = '';
+      for (let i = 0; i < 3; i++) {
+        const car = selectedCars[i];
+        const slot = document.createElement('div');
+        slot.className = 'slot' + (car ? ' filled' : '');
+        slot.innerHTML = `<span class="slot-number">Car ${i+1}</span>`;
+
+        if (car) {
+          const removeBtn = document.createElement('div');
+          removeBtn.className = 'slot-remove';
+          removeBtn.textContent = '×';
+          removeBtn.title = 'Remove';
+          removeBtn.onclick = () => { selectedCars[i] = null; renderAll(); };
+          slot.appendChild(removeBtn);
+
+          slot.innerHTML += `
+            <img class="slot-car-img" src="${car.img}" alt="${car.name}"
+              onerror="this.src='https://via.placeholder.com/90x56/0d47a1/ffffff?text=${encodeURIComponent(car.name)}'">
+            <div class="slot-car-brand">${car.brand}</div>
+            <div class="slot-car-name">${car.name}</div>
+            <div class="slot-car-price">${car.priceLabel}</div>
+          `;
+          slot.appendChild(removeBtn);
+        } else {
+          // Available options = not already selected
+          const usedIds = selectedCars.filter(Boolean).map(c => c.id);
+          const options = carDB.filter(c => !usedIds.includes(c.id));
+          const sel = document.createElement('select');
+          sel.className = 'add-car-dropdown';
+          sel.innerHTML = '<option value="">— Select a car —</option>' +
+            options.map(c => `<option value="${c.id}">${c.brand} ${c.name}</option>`).join('');
+          slot.appendChild(sel);
+
+          const btn = document.createElement('button');
+          btn.className = 'btn-add-car';
+          btn.textContent = '+ Add to Compare';
+          btn.onclick = () => {
+            const id = sel.value;
+            if (!id) return;
+            selectedCars[i] = carDB.find(c => c.id === id);
+            renderAll();
+          };
+          slot.appendChild(btn);
+        }
+        grid.appendChild(slot);
+      }
+    }
+
+    function getWinner(field, cars, higher = true) {
+      // Returns id of winner for numeric field
+      const vals = cars.map(c => c ? c[field] : null);
+      const best = higher ? Math.max(...vals.filter(v => v !== null)) : Math.min(...vals.filter(v => v !== null));
+      return best;
+    }
+
+    function renderTable() {
+      const output = document.getElementById('compareOutput');
+      const active = selectedCars.filter(Boolean);
+      if (active.length === 0) {
+        output.innerHTML = `
+          <div class="empty-compare">
+            <div class="empty-compare-emoji">⚖</div>
+            <h3>No cars selected yet</h3>
+            <p>Pick at least one car from the selector above to start comparing.</p>
+          </div>`;
+        return;
+      }
+
+      const cols = selectedCars; // keep slots (may have nulls)
+      const activeCols = cols.filter(Boolean);
+
+      // Determine winners
+      const bestPrice    = Math.min(...activeCols.map(c => c.price));
+      const bestMileage  = Math.max(...activeCols.map(c => c.mileage));
+      const bestPower    = Math.max(...activeCols.map(c => parseInt(c.power)));
+      const bestAirbags  = Math.max(...activeCols.map(c => c.airbags));
+      const bestBoot     = Math.max(...activeCols.map(c => c.bootSpace));
+      const bestSafety   = Math.max(...activeCols.map(c => c.safetyRating));
+
+      function cell(car, value, isWinner) {
+        if (!car) return '<td style="background:rgba(240,244,255,0.5);"></td>';
+        return `<td class="${isWinner ? 'winner' : ''}">${value}</td>`;
+      }
+
+      function stars(n) {
+        return '★'.repeat(n) + '☆'.repeat(5-n);
+      }
+
+      function ratingBar(val, max) {
+        const pct = Math.round((val / max) * 100);
+        return `<div class="rating-bar-wrap">
+          <div class="rating-bar"><div class="rating-fill" style="width:${pct}%"></div></div>
+          <span>${val}</span>
+        </div>`;
+      }
+
+      // Header row
+      let headerCells = '<td class="row-header">Model</td>';
+      cols.forEach(car => {
+        if (!car) { headerCells += '<td style="background:var(--light);"></td>'; return; }
+        headerCells += `<td style="padding:28px 24px 20px;border-bottom:1px solid var(--border);vertical-align:top;">
+          <img class="th-car-img" src="${car.img}" alt="${car.name}"
+            onerror="this.src='https://via.placeholder.com/80x56/0d47a1/ffffff?text=${encodeURIComponent(car.name)}'">
+          <div class="th-car-brand">${car.brand}</div>
+          <div class="th-car-name">${car.name}</div>
+        </td>`;
+      });
+
+      const rows = [
+        { section: '💰 Pricing' },
+        { label: 'Ex-Showroom Price', render: car => car.priceLabel, winner: c => c.price === bestPrice },
+        { label: 'Body Type', render: car => car.bodyType },
+        { label: 'Warranty', render: car => car.warranty },
+
+        { section: '⚙ Engine & Performance' },
+        { label: 'Engine', render: car => car.engine },
+        { label: 'Fuel Type', render: car => car.fuel },
+        { label: 'Power', render: car => car.power, winner: c => parseInt(c.power) === bestPower },
+        { label: 'Torque', render: car => car.torque },
+        { label: 'Transmission', render: car => car.transmission },
+        { label: 'Mileage', render: car => car.mileage + ' km/l', winner: c => c.mileage === bestMileage },
+
+        { section: '🪑 Space & Comfort' },
+        { label: 'Seating', render: car => car.seats + ' Seats' },
+        { label: 'Boot Space', render: car => car.bootSpace + ' L', winner: c => c.bootSpace === bestBoot },
+        { label: 'Sunroof', render: car => car.sunroof },
+        { label: 'Infotainment', render: car => car.infotainment },
+
+        { section: '🛡 Safety' },
+        { label: 'Safety Rating', render: car => stars(car.safetyRating) + ` (${car.safetyRating}/5)`, winner: c => c.safetyRating === bestSafety },
+        { label: 'Airbags', render: car => car.airbags, winner: c => c.airbags === bestAirbags },
+        { label: 'ABS', render: car => car.abs },
+        { label: 'ESP / ESC', render: car => car.esp },
+      ];
+
+      let tableHtml = `<div class="table-wrap"><table id="compareTable">
+        <tr class="car-header-row">${headerCells}</tr>`;
+
+      rows.forEach(row => {
+        if (row.section) {
+          let secCells = `<td class="row-header">${row.section}</td>`;
+          cols.forEach(() => secCells += '<td style="background:var(--light);border-bottom:1px solid var(--border);padding:10px 24px;"></td>');
+          tableHtml += `<tr class="section-row">${secCells}</tr>`;
+          return;
+        }
+        tableHtml += `<tr class="data-row">
+          <td style="background:var(--navy);color:rgba(255,255,255,0.6);font-size:13px;font-weight:500;text-align:left;padding:16px 24px;border-bottom:1px solid var(--border);">${row.label}</td>`;
+        cols.forEach(car => {
+          if (!car) { tableHtml += '<td style="background:rgba(240,244,255,0.5);border-bottom:1px solid var(--border);"></td>'; return; }
+          const isWinner = row.winner ? row.winner(car) && activeCols.length > 1 : false;
+          tableHtml += `<td class="${isWinner ? 'winner' : ''}" style="border-bottom:1px solid var(--border);padding:16px 24px;text-align:center;font-size:14px;">${row.render(car)}</td>`;
+        });
+        tableHtml += '</tr>';
+      });
+
+      tableHtml += '</table></div>';
+      output.innerHTML = tableHtml;
+    }
+
+    function renderAll() {
+      renderSlots();
+      renderTable();
+    }
+
+    function clearAll() {
+      selectedCars = [null, null, null];
+      renderAll();
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
